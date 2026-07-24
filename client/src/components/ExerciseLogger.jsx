@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { reactSelectStyles } from "../styles/reactSelectStyles";
 import { getInitialSet } from "../utils/getInitialSet";
 import { isSameDay } from "date-fns";
+import { Backdrop } from "./Backdrop";
 import MetricValue from "./MetricValue";
 import HistoryWorkoutCard from "./HistoryWorkoutCard";
 import Select from "react-select";
@@ -33,6 +34,8 @@ function ExerciseLogger({
   const { user } = useAuthContext();
 
   const { settings } = useSettings();
+
+  const [isDistanceMenuOpen, setIsDistanceMenuOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -954,6 +957,12 @@ function ExerciseLogger({
 
                   {metric === "distance" && (
                     <div className="distance-unit-select">
+
+                      {isDistanceMenuOpen && (
+                        <Backdrop
+                          onClose={() => setIsDistanceMenuOpen(false)}
+                        />
+                      )}
                       <Select
                         value={{
                           value: distanceUnit,
@@ -965,6 +974,11 @@ function ExerciseLogger({
                         }))}
                         styles={reactSelectStyles}
                         isSearchable={false}
+                        menuIsOpen={isDistanceMenuOpen}
+                        onMenuOpen={() => setIsDistanceMenuOpen(true)}
+                        onMenuClose={() => setIsDistanceMenuOpen(false)}
+                        menuPortalTarget={document.body}
+                        menuPosition="fixed"
                         onChange={(option) =>
                           handleUnitChange("distance", option.value)
                         }

@@ -1,5 +1,6 @@
-import { useLayoutEffect, useState, useEffect } from "react";
+import { useLayoutEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { Backdrop } from "./Backdrop";
 
 function MenuPortal({
   anchorRef,
@@ -8,19 +9,6 @@ function MenuPortal({
   children,
   onClose
 }) {
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleClickOutside = () => {
-      onClose();
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () =>
-      document.removeEventListener("mousedown", handleClickOutside);
-  }, [isOpen, onClose]);
 
   const [position, setPosition] = useState({
     top: 0,
@@ -84,23 +72,22 @@ function MenuPortal({
   }
 
   return createPortal(
+    <>
+      <Backdrop onClose={onClose} />
 
-    <div
-      style={{
-        position: "fixed",
-        top: position.top,
-        left: position.left,
-        width,
-        zIndex: 10000
-      }}
-      onClick={(event) => event.stopPropagation()}
-      onMouseDown={(event) => event.stopPropagation()}
-    >
-      {children}
-    </div>,
-
+      <div
+        style={{
+          position: "fixed",
+          top: position.top,
+          left: position.left,
+          width,
+          zIndex: 10000
+        }}
+      >
+        {children}
+      </div>
+    </>,
     document.body
-
   );
 
 }

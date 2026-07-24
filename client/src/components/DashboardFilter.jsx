@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { forwardRef } from "react";
 import { format } from "date-fns";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { reactSelectStyles } from "../styles/reactSelectStyles";
-import DatePicker from "react-datepicker";
+import { Backdrop } from "./Backdrop";
+import DashboardCalendarModal from "./DashboardCalendarModal";
 import Select from "react-select";
 import "./DashboardFilter.css";
 
@@ -29,6 +31,9 @@ function DashboardFilter({
   customRange,
   setCustomRange
 }) {
+
+  const [isPeriodMenuOpen, setIsPeriodMenuOpen] = useState(false);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const rangeLabel = (() => {
     const { startDate, endDate } = customRange;
@@ -62,6 +67,12 @@ function DashboardFilter({
       <div className="filter-toolbar">
 
         <div className="filter-period">
+
+          {isPeriodMenuOpen && (
+            <Backdrop
+              onClose={() => setIsPeriodMenuOpen(false)}
+            />
+          )}
           <Select
             options={periodOptions}
             value={periodOptions.find(
@@ -69,6 +80,9 @@ function DashboardFilter({
             )}
             onChange={option => onPeriodChange(option.value)}
             isSearchable={false}
+            menuIsOpen={isPeriodMenuOpen}
+            onMenuOpen={() => setIsPeriodMenuOpen(true)}
+            onMenuClose={() => setIsPeriodMenuOpen(false)}
             menuPortalTarget={document.body}
             menuPosition="fixed"
             styles={reactSelectStyles}
@@ -101,21 +115,19 @@ function DashboardFilter({
 
         {selectedPeriod === "custom" && (
           <div className="period-navigation">
-            <DatePicker
-              selectsRange
-              startDate={customRange.startDate}
-              endDate={customRange.endDate}
-              onChange={([startDate, endDate]) =>
-                setCustomRange({
-                  startDate,
-                  endDate
-                })
-              }
-              customInput={<DateButton label={rangeLabel} />}
-              dateFormat="dd MMM yyyy"
-              shouldCloseOnSelect={false}
-              popperPlacement="bottom-end"
+
+            <DateButton
+              label={rangeLabel}
+              onClick={() => setIsCalendarOpen(true)}
             />
+
+            <DashboardCalendarModal
+              isOpen={isCalendarOpen}
+              onClose={() => setIsCalendarOpen(false)}
+              customRange={customRange}
+              setCustomRange={setCustomRange}
+            />
+
           </div>
         )}
       </div>

@@ -1,26 +1,26 @@
-import { createPortal } from 'react-dom';
+import { createPortal } from "react-dom";
 import DatePicker from "react-datepicker";
-import './Modal.css';
+import "./Modal.css";
 
-function WorkoutCalendarModal({
+function DashboardCalendarModal({
   isOpen,
   onClose,
-  workouts,
-  onSelectWorkoutDate
+  customRange,
+  setCustomRange
 }) {
-
   if (!isOpen) {
     return null;
   }
 
-  const workoutDates =
-    workouts.map(workout =>
-      new Date(workout.date)
-    );
+  const handleDateChange = ([startDate, endDate]) => {
+    setCustomRange({
+      startDate,
+      endDate
+    });
 
-  const handleDateChange = (date) => {
-    onSelectWorkoutDate(date);
-    onClose();
+    if (startDate && endDate) {
+      onClose();
+    }
   };
 
   return createPortal(
@@ -30,16 +30,18 @@ function WorkoutCalendarModal({
     >
       <div
         className="modal calendar-modal"
-        onClick={(event) => event.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
-
-        <h2>Workout Calendar</h2>
+        <h2>Select Date Range</h2>
 
         <DatePicker
           inline
-          highlightDates={workoutDates}
+          selectsRange
+          startDate={customRange.startDate}
+          endDate={customRange.endDate}
           onChange={handleDateChange}
           maxDate={new Date()}
+          shouldCloseOnSelect={false}
         />
 
         <div className="modal-actions">
@@ -48,14 +50,13 @@ function WorkoutCalendarModal({
             className="secondary-btn"
             onClick={onClose}
           >
-            Close
+            Cancel
           </button>
         </div>
-
       </div>
     </div>,
     document.body
   );
 }
 
-export default WorkoutCalendarModal;
+export default DashboardCalendarModal;

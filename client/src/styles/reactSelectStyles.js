@@ -53,7 +53,7 @@ export const reactSelectStyles = {
 
   menuPortal: (base) => ({
     ...base,
-    zIndex: 9999
+    zIndex: 10000
   }),
 
   menuList: (base) => ({
