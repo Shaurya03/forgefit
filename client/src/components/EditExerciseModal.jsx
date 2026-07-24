@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { reactSelectStyles } from "../styles/reactSelectStyles";
+import { Backdrop } from "./Backdrop";
 import MetricSelector from "./MetricSelector";
 import Select from "react-select";
 import "./Modal.css";
@@ -16,6 +17,7 @@ function EditExerciseModal({
   const [metrics, setMetrics] = useState([]);
   const [categoryId, setCategoryId] = useState("");
   const [error, setError] = useState("");
+  const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
 
   /* eslint-disable react-hooks/set-state-in-effect */
 
@@ -85,6 +87,7 @@ function EditExerciseModal({
   };
 
   const handleClose = () => {
+    setIsCategoryMenuOpen(false);
     setError("");
     setName("");
     setMetrics(exercise?.metrics || []);
@@ -131,10 +134,20 @@ function EditExerciseModal({
 
         <label>Category</label>
 
+        {isCategoryMenuOpen && (
+          <Backdrop
+            onClose={() => setIsCategoryMenuOpen(false)}
+          />
+        )}
         <Select
           options={categoryOptions}
           value={selectedOption}
           styles={reactSelectStyles}
+          menuIsOpen={isCategoryMenuOpen}
+          onMenuOpen={() => setIsCategoryMenuOpen(true)}
+          onMenuClose={() => setIsCategoryMenuOpen(false)}
+          menuPortalTarget={document.body}
+          menuPosition="fixed"
           onChange={(option) => {
             setCategoryId(option.value);
             setError("");
