@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useSettings } from "../hooks/useSettings";
-import { API_BASE_URL } from "../services/api";
+import { API_BASE_URL, authFetch } from "../services/api";
 import { getHistoryWithPRs } from "../utils/prHistory";
 import { useBackButtonClose } from "../hooks/useBackButtonClose";
 import HistoryWorkoutCard from "./HistoryWorkoutCard";
@@ -37,7 +37,7 @@ function ExerciseHistoryModal({
 
       try {
 
-        const response = await fetch(
+        const response = await authFetch(
           `${API_BASE_URL}/workouts/exercises/${exerciseId}/history`,
           {
             headers: {

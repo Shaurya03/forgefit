@@ -1,4 +1,5 @@
 import { useSettingsContext } from "./useSettingsContext";
+import { authFetch } from "../services/api";
 import { useAuthContext } from "./useAuthContext";
 
 export const useSettings = () => {
@@ -30,7 +31,7 @@ export const useSettings = () => {
 
     if (!user) return;
 
-    const response = await fetch(
+    const response = await authFetch(
       "/api/settings",
       {
         headers: {
@@ -60,7 +61,7 @@ export const useSettings = () => {
 
     if (!user) return;
 
-    const response = await fetch(
+    const response = await authFetch(
       "/api/settings",
       {
         method: "PATCH",

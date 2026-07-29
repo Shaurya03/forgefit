@@ -2,7 +2,7 @@ import { useEffect, useReducer } from "react";
 import { workoutReducer } from "./workoutReducer";
 import { workoutContext } from "./workoutContext";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { API_BASE_URL } from "../services/api";
+import { API_BASE_URL, authFetch } from "../services/api";
 
 export const WorkoutContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(workoutReducer, {
@@ -27,7 +27,7 @@ export const WorkoutContextProvider = ({ children }) => {
 
     const fetchWorkouts = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/workouts`, {
+        const response = await authFetch(`${API_BASE_URL}/workouts`, {
           headers: {
             Authorization: `Bearer ${user.token}`
           }

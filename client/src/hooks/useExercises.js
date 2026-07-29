@@ -1,3 +1,4 @@
+import { authFetch } from "../services/api";
 import { useExerciseContext } from "./useExerciseContext";
 import { useWorkoutContext } from "./useWorkoutContext";
 import { useAuthContext } from "./useAuthContext";
@@ -10,7 +11,7 @@ export const useExercises = () => {
   const fetchExercises = async () => {
     if (!user) return;
 
-    const response = await fetch("/api/exercises", {
+    const response = await authFetch("/api/exercises", {
       headers: {
         Authorization: `Bearer ${user.token}`
       }
@@ -29,7 +30,7 @@ export const useExercises = () => {
   const createExercise = async (exerciseData) => {
     if (!user) return;
 
-    const response = await fetch("/api/exercises", {
+    const response = await authFetch("/api/exercises", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -57,7 +58,7 @@ export const useExercises = () => {
   const updateExercise = async (id, exerciseData) => {
     if (!user) return;
 
-    const response = await fetch(`/api/exercises/${id}`, {
+    const response = await authFetch(`/api/exercises/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -83,7 +84,7 @@ export const useExercises = () => {
   const deleteExercise = async (id) => {
     if (!user) return;
 
-    const response = await fetch(`/api/exercises/${id}`, {
+    const response = await authFetch(`/api/exercises/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${user.token}`
@@ -96,7 +97,7 @@ export const useExercises = () => {
       throw new Error(json.error);
     }
 
-    const workoutsResponse = await fetch("/api/workouts", {
+    const workoutsResponse = await authFetch("/api/workouts", {
       headers: {
         Authorization: `Bearer ${user.token}`
       }

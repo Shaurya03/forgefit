@@ -4,7 +4,7 @@ import { getMetricConfig } from "../utils/metricConfig";
 import { DEFAULT_UNITS } from "../utils/settings";
 import { useWorkoutContext } from "../hooks/useWorkoutContext";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { API_BASE_URL } from "../services/api";
+import { API_BASE_URL, authFetch } from "../services/api";
 import { toast } from "react-toastify";
 import { UNITS, DISTANCE_SYSTEMS } from "../utils/units";
 import { getDisplayMetrics } from "../utils/derivedMetrics";
@@ -488,7 +488,7 @@ function ExerciseLogger({
         dispatchType = "UPDATE_WORKOUT";
       }
 
-      const response = await fetch(
+      const response = await authFetch(
         url,
         {
           method,
@@ -602,7 +602,7 @@ function ExerciseLogger({
 
     try {
 
-      const response = await fetch(
+      const response = await authFetch(
         `${API_BASE_URL}/workouts/${activeWorkout._id}`,
         {
           method:
@@ -730,7 +730,7 @@ function ExerciseLogger({
 
     try {
 
-      const response = await fetch(
+      const response = await authFetch(
         `${API_BASE_URL}/workouts/${activeWorkout._id}`,
         {
           method: "PATCH",
