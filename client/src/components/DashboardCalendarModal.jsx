@@ -1,5 +1,6 @@
 import { createPortal } from "react-dom";
 import DatePicker from "react-datepicker";
+import { useBackButtonClose } from "../hooks/useBackButtonClose";
 import "./Modal.css";
 
 function DashboardCalendarModal({
@@ -8,6 +9,9 @@ function DashboardCalendarModal({
   customRange,
   setCustomRange
 }) {
+
+  useBackButtonClose(isOpen, onClose);
+
   if (!isOpen) {
     return null;
   }

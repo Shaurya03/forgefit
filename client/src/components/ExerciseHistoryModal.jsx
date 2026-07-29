@@ -4,6 +4,7 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { useSettings } from "../hooks/useSettings";
 import { API_BASE_URL } from "../services/api";
 import { getHistoryWithPRs } from "../utils/prHistory";
+import { useBackButtonClose } from "../hooks/useBackButtonClose";
 import HistoryWorkoutCard from "./HistoryWorkoutCard";
 import "./Modal.css";
 
@@ -19,6 +20,8 @@ function ExerciseHistoryModal({
   const [history, setHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  useBackButtonClose(isOpen, onClose);
 
   useEffect(() => {
 

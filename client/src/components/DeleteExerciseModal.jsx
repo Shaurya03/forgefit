@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
+import { useBackButtonClose } from "../hooks/useBackButtonClose";
 import "./Modal.css";
 
 function DeleteExerciseModal({
@@ -10,6 +11,13 @@ function DeleteExerciseModal({
 }) {
 
   const [confirmed, setConfirmed] = useState(false);
+
+  const handleClose = () => {
+    setConfirmed(false);
+    onClose();
+  };
+
+  useBackButtonClose(isOpen, handleClose);
 
   /* eslint-disable react-hooks/set-state-in-effect */
 
@@ -27,11 +35,6 @@ function DeleteExerciseModal({
 
   const handleDelete = () => {
     onDelete();
-  };
-
-  const handleClose = () => {
-    setConfirmed(false);
-    onClose();
   };
 
   const workoutCount =

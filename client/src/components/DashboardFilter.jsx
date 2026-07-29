@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { reactSelectStyles } from "../styles/reactSelectStyles";
 import { Backdrop } from "./Backdrop";
+import { useBackButtonClose } from "../hooks/useBackButtonClose";
 import DashboardCalendarModal from "./DashboardCalendarModal";
 import Select from "react-select";
 import "./DashboardFilter.css";
@@ -34,6 +35,8 @@ function DashboardFilter({
 
   const [isPeriodMenuOpen, setIsPeriodMenuOpen] = useState(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+
+  useBackButtonClose(isPeriodMenuOpen, () => setIsPeriodMenuOpen(false));
 
   const rangeLabel = (() => {
     const { startDate, endDate } = customRange;

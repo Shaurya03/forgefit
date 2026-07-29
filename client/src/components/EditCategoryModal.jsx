@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
+import { useBackButtonClose } from "../hooks/useBackButtonClose";
 import MetricSelector from "./MetricSelector";
 import "./Modal.css";
 
@@ -12,6 +13,15 @@ function EditCategoryModal({
   const [categoryName, setCategoryName] = useState("");
   const [metrics, setMetrics] = useState([]);
   const [error, setError] = useState("");
+
+  const handleClose = () => {
+    setError("");
+    setCategoryName(category?.name || "");
+    setMetrics(category?.defaultMetrics || []);
+    onClose();
+  };
+
+  useBackButtonClose(isOpen, handleClose);
 
   /* eslint-disable react-hooks/set-state-in-effect */
 
@@ -81,13 +91,6 @@ function EditCategoryModal({
       setError(error.message);
     }
 
-  };
-
-  const handleClose = () => {
-    setError("");
-    setCategoryName(category?.name || "");
-    setMetrics(category?.defaultMetrics || []);
-    onClose();
   };
 
   return createPortal(

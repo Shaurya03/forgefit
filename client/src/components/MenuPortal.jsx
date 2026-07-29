@@ -1,6 +1,7 @@
 import { useLayoutEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Backdrop } from "./Backdrop";
+import { useBackButtonClose } from "../hooks/useBackButtonClose";
 
 function MenuPortal({
   anchorRef,
@@ -9,6 +10,8 @@ function MenuPortal({
   children,
   onClose
 }) {
+
+  useBackButtonClose(isOpen, onClose);
 
   const [position, setPosition] = useState({
     top: 0,

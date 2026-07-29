@@ -1,4 +1,5 @@
 import { createPortal } from "react-dom";
+import { useBackButtonClose } from "../hooks/useBackButtonClose";
 import "./Modal.css";
 
 function DeleteCategoryModal({
@@ -9,6 +10,12 @@ function DeleteCategoryModal({
   onDelete
 }) {
 
+  const handleClose = () => {
+    onClose();
+  };
+
+  useBackButtonClose(isOpen, handleClose);
+
   if (!isOpen) {
     return null;
   }
@@ -16,10 +23,6 @@ function DeleteCategoryModal({
   const handleDelete = () => {
     onDelete();
   }
-
-  const handleClose = () => {
-    onClose();
-  };
 
   return createPortal(
     <div

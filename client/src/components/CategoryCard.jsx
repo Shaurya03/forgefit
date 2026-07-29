@@ -16,10 +16,12 @@ function CategoryCard({
   const menuButtonRef = useRef(null);
 
   const handleEdit = () => {
+    setOpenCategoryMenu(null);
     onEditCategory(category);
   };
 
   const handleDelete = () => {
+    setOpenCategoryMenu(null);
     onDeleteCategory(category);
   };
 

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { reactSelectStyles } from "../styles/reactSelectStyles";
 import { Backdrop } from "./Backdrop";
+import { useBackButtonClose } from "../hooks/useBackButtonClose";
 import MetricSelector from "./MetricSelector";
 import Select from "react-select";
 import "./Modal.css";
@@ -18,6 +19,19 @@ function EditExerciseModal({
   const [categoryId, setCategoryId] = useState("");
   const [error, setError] = useState("");
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
+
+  const handleClose = () => {
+    setIsCategoryMenuOpen(false);
+    setError("");
+    setName("");
+    setMetrics(exercise?.metrics || []);
+    setCategoryId(exercise?.categoryId?._id || "");
+
+    onClose();
+  };
+
+  useBackButtonClose(isOpen, handleClose);
+  useBackButtonClose(isCategoryMenuOpen, () => setIsCategoryMenuOpen(false));
 
   /* eslint-disable react-hooks/set-state-in-effect */
 
@@ -84,16 +98,6 @@ function EditExerciseModal({
     } catch (error) {
       setError(error.message);
     }
-  };
-
-  const handleClose = () => {
-    setIsCategoryMenuOpen(false);
-    setError("");
-    setName("");
-    setMetrics(exercise?.metrics || []);
-    setCategoryId(exercise?.categoryId?._id || "");
-
-    onClose();
   };
 
   const categoryOptions = categories.map(category => ({

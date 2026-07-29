@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-
+import { useBackButtonClose } from "../hooks/useBackButtonClose";
 import { useCategories } from "../hooks/useCategories";
 import { useExercises } from "../hooks/useExercises";
 
@@ -47,6 +47,27 @@ function Exercises() {
     location.state?.workoutDate;
 
   const mode = location.state?.mode;
+
+  const isDirectEditEntry = mode === "edit" && Boolean(selectedExerciseId);
+
+  const handleBackFromExerciseList = () => {
+    setSearchTerm("");
+    setSelectedCategory(null);
+  };
+
+  const handleBackFromLogger = () => {
+    setSelectedExercise(null);
+  };
+
+  useBackButtonClose(
+    !isDirectEditEntry && Boolean(selectedCategory),
+    handleBackFromExerciseList
+  );
+
+  useBackButtonClose(
+    !isDirectEditEntry && Boolean(selectedExercise),
+    handleBackFromLogger
+  );
 
   /* eslint-disable react-hooks/exhaustive-deps */
 
@@ -120,10 +141,7 @@ function Exercises() {
             deleteExercise={deleteExercise}
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
-            onBack={() => {
-              setSearchTerm("");
-              setSelectedCategory(null);
-            }}
+            onBack={handleBackFromExerciseList}
             onSelectExercise={setSelectedExercise}
           />
         )}
@@ -133,7 +151,7 @@ function Exercises() {
             exercise={selectedExercise}
             workoutId={workoutId}
             workoutDate={workoutDate}
-            onBack={() => setSelectedExercise(null)}
+            onBack={handleBackFromLogger}
             mode={mode}
           />
         )}

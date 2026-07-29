@@ -17,6 +17,7 @@ import { reactSelectStyles } from "../styles/reactSelectStyles";
 import { getInitialSet } from "../utils/getInitialSet";
 import { isSameDay } from "date-fns";
 import { Backdrop } from "./Backdrop";
+import { useBackButtonClose } from "../hooks/useBackButtonClose";
 import MetricValue from "./MetricValue";
 import HistoryWorkoutCard from "./HistoryWorkoutCard";
 import Select from "react-select";
@@ -36,6 +37,7 @@ function ExerciseLogger({
   const { settings } = useSettings();
 
   const [isDistanceMenuOpen, setIsDistanceMenuOpen] = useState(false);
+  useBackButtonClose(isDistanceMenuOpen, () => setIsDistanceMenuOpen(false));
 
   const navigate = useNavigate();
 

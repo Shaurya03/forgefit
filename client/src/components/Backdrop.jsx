@@ -11,8 +11,6 @@ export function Backdrop({ onClose }) {
     e.preventDefault();
     e.stopPropagation();
 
-    if (!e.defaultPrevented) return;
-
     onClose();
   };
 

@@ -36,6 +36,10 @@ function Workouts() {
 
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
+  const syncDateToHistory = () => {
+    navigate(location.pathname, { replace: true, state: { selectedDate } });
+  };
+
   const workoutsWithPRs = useMemo(
     () => getWorkoutHistoryWithPRs(workouts),
     [workouts]
@@ -50,6 +54,7 @@ function Workouts() {
     );
 
   const handleExerciseClick = (workout, exercise) => {
+    syncDateToHistory();
     navigate("/exercises", {
       state: {
         selectedExerciseId: exercise.exerciseId._id,
@@ -61,7 +66,7 @@ function Workouts() {
   };
 
   const handleAddExercise = (workout) => {
-
+    syncDateToHistory();
     navigate("/exercises", {
       state: {
         workoutId: workout._id,
@@ -168,13 +173,14 @@ function Workouts() {
 
             <button
               className="primary-btn"
-              onClick={() =>
+              onClick={() => {
+                syncDateToHistory();
                 navigate("/exercises", {
                   state: {
                     workoutDate: selectedDate
                   }
                 })
-              }
+              }}
             >
               Start Workout
             </button>

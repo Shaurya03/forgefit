@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
+import { useBackButtonClose } from "../hooks/useBackButtonClose";
 import MetricSelector from "./MetricSelector";
 import "./Modal.css";
 
@@ -13,6 +14,20 @@ function CreateExerciseModal({
   const [name, setName] = useState("");
   const [metrics, setMetrics] = useState([]);
   const [error, setError] = useState("");
+
+  const handleClose = () => {
+
+    setName("");
+    setError("");
+
+    setMetrics(
+      selectedCategory?.defaultMetrics || []
+    );
+
+    onClose();
+  };
+
+  useBackButtonClose(isOpen, handleClose);
 
   /* eslint-disable react-hooks/set-state-in-effect */
 
@@ -79,18 +94,6 @@ function CreateExerciseModal({
     } catch (error) {
       setError(error.error || error.message);
     }
-  };
-
-  const handleClose = () => {
-
-    setName("");
-    setError("");
-
-    setMetrics(
-      selectedCategory?.defaultMetrics || []
-    );
-
-    onClose();
   };
 
   return createPortal(

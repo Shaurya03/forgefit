@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
+import { useBackButtonClose } from "../hooks/useBackButtonClose";
 import MetricSelector from "./MetricSelector";
 import "./Modal.css";
 
@@ -11,6 +12,15 @@ function CreateCategoryModal({
   const [categoryName, setCategoryName] = useState("");
   const [metrics, setMetrics] = useState([]);
   const [error, setError] = useState("");
+
+  const handleClose = () => {
+    setError("");
+    setCategoryName("");
+    setMetrics([]);
+    onClose();
+  };
+
+  useBackButtonClose(isOpen, handleClose);
 
   const shouldAutoFocus =
     !window.matchMedia("(pointer: coarse)").matches;
@@ -66,13 +76,6 @@ function CreateCategoryModal({
     } catch (error) {
       setError(error.message);
     }
-  };
-
-  const handleClose = () => {
-    setError("");
-    setCategoryName("");
-    setMetrics([]);
-    onClose();
   };
 
   return createPortal(

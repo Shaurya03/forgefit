@@ -1,4 +1,5 @@
 import { createPortal } from 'react-dom';
+import { useBackButtonClose } from '../hooks/useBackButtonClose';
 import DatePicker from "react-datepicker";
 import './Modal.css';
 
@@ -8,6 +9,8 @@ function WorkoutCalendarModal({
   workouts,
   onSelectWorkoutDate
 }) {
+
+  useBackButtonClose(isOpen, onClose);
 
   if (!isOpen) {
     return null;
