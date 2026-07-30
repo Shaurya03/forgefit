@@ -1,11 +1,12 @@
 const express = require('express');
 
 const { signupUser, loginUser, googleLogin } = require('../controllers/userController');
+const authLimiter = require('../middleware/authLimiter');
 
 const router = express.Router();
 
-router.post('/signup', signupUser);
-router.post('/login', loginUser);
-router.post("/google", googleLogin);
+router.post('/signup', authLimiter, signupUser);
+router.post('/login', authLimiter, loginUser);
+router.post("/google", authLimiter, googleLogin);
 
 module.exports = router;
