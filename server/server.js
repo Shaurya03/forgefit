@@ -6,10 +6,26 @@ const cors = require("cors");
 const app = express();
 app.use(express.json());
 
-app.use(cors({
-  origin: process.env.CLIENT_ORIGIN || "http://localhost:5173",
-  credentials: true,
-}));
+const allowedOrigins = [
+  "http://localhost:5173",
+  process.env.CLIENT_ORIGIN,
+];
+
+app.use(
+  cors({
+    origin(origin, callback) {
+      // allow Postman, curl, etc.
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  })
+);
 
 // Test route
 app.get("/", (req, res) => {
