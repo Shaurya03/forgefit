@@ -8,6 +8,7 @@ import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import Exercises from './pages/Exercises';
 import Settings from './pages/Settings';
+import NotFound from './pages/NotFound';
 
 function App() {
   const { user } = useAuthContext();
@@ -47,6 +48,8 @@ function App() {
             path="/signup"
             element={!user ? <Signup /> : <Navigate to="/" />}
           />
+
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </>
