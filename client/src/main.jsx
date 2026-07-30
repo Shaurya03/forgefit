@@ -7,7 +7,8 @@ import { CategoryContextProvider } from './context/CategoryContextProvider.jsx';
 import { ExerciseContextProvider } from './context/ExerciseContextProvider.jsx';
 import { SettingsContextProvider } from './context/SettingsContextProvider.jsx';
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import AppToastContainer from "./components/AppToastContainer.jsx"
+import AppToastContainer from "./components/AppToastContainer.jsx";
+import ErrorBoundary from './components/ErrorBoundary.jsx';
 import App from './App.jsx';
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,23 +19,25 @@ import "./styles/reactDatePicker.css";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <GoogleOAuthProvider
-      clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
-    >
-      <BrowserRouter>
-        <AuthContextProvider>
-          <SettingsContextProvider>
-            <WorkoutContextProvider>
-              <CategoryContextProvider>
-                <ExerciseContextProvider>
-                  <App />
-                </ExerciseContextProvider>
-              </CategoryContextProvider>
-            </WorkoutContextProvider>
-            <AppToastContainer />
-          </SettingsContextProvider>
-        </AuthContextProvider>
-      </BrowserRouter>
-    </GoogleOAuthProvider>
+    <ErrorBoundary>
+      <GoogleOAuthProvider
+        clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
+      >
+        <BrowserRouter>
+          <AuthContextProvider>
+            <SettingsContextProvider>
+              <WorkoutContextProvider>
+                <CategoryContextProvider>
+                  <ExerciseContextProvider>
+                    <App />
+                  </ExerciseContextProvider>
+                </CategoryContextProvider>
+              </WorkoutContextProvider>
+              <AppToastContainer />
+            </SettingsContextProvider>
+          </AuthContextProvider>
+        </BrowserRouter>
+      </GoogleOAuthProvider>
+    </ErrorBoundary>
   </StrictMode>
 );
