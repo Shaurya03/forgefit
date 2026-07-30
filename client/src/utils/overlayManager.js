@@ -41,7 +41,10 @@ function flush() {
 
   while (historyDepth < desired) {
     historyDepth += 1;
-    window.history.pushState({ overlayDepth: historyDepth }, "");
+    window.history.pushState(
+      { ...window.history.state, overlayDepth: historyDepth },
+      ""
+    );
   }
 
   if (historyDepth > desired) {
