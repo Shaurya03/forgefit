@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useBackButtonClose } from "../hooks/useBackButtonClose";
 import { useCategories } from "../hooks/useCategories";
@@ -9,6 +9,9 @@ import ExerciseList from "../components/ExerciseList";
 import ExerciseLogger from "../components/ExerciseLogger";
 
 import "./Exercises.css";
+
+const SESSION_CATEGORY_KEY = "exercises:lastCategoryId";
+const SESSION_EXERCISE_KEY = "exercises:lastExerciseId";
 
 function Exercises() {
   const location = useLocation();
@@ -53,10 +56,12 @@ function Exercises() {
   const handleBackFromExerciseList = () => {
     setSearchTerm("");
     setSelectedCategory(null);
+    sessionStorage.removeItem(SESSION_CATEGORY_KEY);
   };
 
   const handleBackFromLogger = () => {
     setSelectedExercise(null);
+    sessionStorage.removeItem(SESSION_EXERCISE_KEY);
   };
 
   useBackButtonClose(
@@ -80,24 +85,62 @@ function Exercises() {
 
   /* eslint-disable react-hooks/set-state-in-effect */
 
+  const hasRestoredRef = useRef(false);
+
   useEffect(() => {
     if (
-      !selectedExerciseId ||
+      hasRestoredRef.current ||
+      categories.length === 0 ||
       exercises.length === 0
     ) {
       return;
     }
 
-    const exercise = exercises.find(
-      e => e._id === selectedExerciseId
+    hasRestoredRef.current = true;
+
+    const exerciseIdToRestore =
+      selectedExerciseId ||
+      sessionStorage.getItem(SESSION_EXERCISE_KEY);
+
+    if (exerciseIdToRestore) {
+      const exercise = exercises.find(
+        e => e._id === exerciseIdToRestore
+      );
+
+      if (exercise) {
+        setSelectedCategory(exercise.categoryId);
+        setSelectedExercise(exercise);
+        return;
+      }
+    }
+
+    const categoryIdToRestore = sessionStorage.getItem(
+      SESSION_CATEGORY_KEY
     );
 
-    if (!exercise) return;
+    if (categoryIdToRestore) {
+      const category = categories.find(
+        c => c._id === categoryIdToRestore
+      );
 
-    setSelectedCategory(exercise.categoryId);
-    setSelectedExercise(exercise);
+      if (category) {
+        setSelectedCategory(category);
+      }
+    }
 
-  }, [selectedExerciseId, exercises]);
+  }, [selectedExerciseId, exercises, categories]);
+
+  useEffect(() => {
+    if (selectedCategory) {
+      sessionStorage.setItem(SESSION_CATEGORY_KEY, selectedCategory._id);
+    }
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    if (selectedExercise) {
+      sessionStorage.setItem(SESSION_EXERCISE_KEY, selectedExercise._id);
+    }
+  }, [selectedExercise]);
 
   /* eslint-enable react-hooks/set-state-in-effect */
 

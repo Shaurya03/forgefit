@@ -11,7 +11,11 @@ import Settings from './pages/Settings';
 import NotFound from './pages/NotFound';
 
 function App() {
-  const { user } = useAuthContext();
+  const { user, authIsReady } = useAuthContext();
+
+  if (!authIsReady) {
+    return null;
+  }
 
   return (
     <>
