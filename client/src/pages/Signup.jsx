@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { PiBarbellDuotone, PiEye, PiEyeSlash } from "react-icons/pi";
+import { PiEye, PiEyeSlash } from "react-icons/pi";
 import { useSignup } from "../hooks/useSignup";
 import { GoogleLogin } from "@react-oauth/google";
 import { useGoogleAuth } from "../hooks/useGoogleAuth";
@@ -51,7 +51,11 @@ function Signup() {
 
         <div className="auth-header">
 
-          <PiBarbellDuotone className="auth-logo" />
+          <svg className="auth-logo" viewBox="0 0 100 100" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="22,82 50,54 78,82" opacity="0.35" />
+            <polyline points="22,64 50,36 78,64" opacity="0.65" />
+            <polyline points="22,46 50,18 78,46" />
+          </svg>
 
           <h2 className="auth-title">ForgeFit</h2>
 

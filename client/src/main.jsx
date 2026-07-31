@@ -14,7 +14,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import 'react-toastify/dist/ReactToastify.css';
 import "./styles/theme.css";
 import "./index.css";
-import "./styles/reactDatePicker.css";
+import "./styles/reactDatepicker.css";
 
 
 createRoot(document.getElementById('root')).render(
