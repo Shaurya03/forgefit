@@ -49,9 +49,20 @@ function flush() {
 
   if (historyDepth > desired) {
     const diff = historyDepth - desired;
-    programmaticPopsExpected += diff;
-    window.history.go(-diff);
-    // historyDepth catches down as each popstate arrives above
+
+    // Only safe to rewind browser history if we're still sitting on one
+    // of our own phantom overlay entries. If the app has since navigated
+    // forward to a new route (e.g. clicking a Navbar link), the current
+    // history entry belongs to React Router and won't carry our
+    // overlayDepth marker — calling go() here would wrongly undo that
+    // navigation. In that case, just resync our counter instead.
+    if (window.history.state?.overlayDepth === historyDepth) {
+      programmaticPopsExpected += diff;
+      window.history.go(-diff);
+      // historyDepth catches down as each popstate arrives above
+    } else {
+      historyDepth = desired;
+    }
   }
 }
 
