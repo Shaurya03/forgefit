@@ -10,9 +10,12 @@ import {
 } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { useWorkoutContext } from "../hooks/useWorkoutContext";
-import { FiChevronLeft, FiChevronRight, FiCalendar } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight, FiCalendar, FiPlus } from "react-icons/fi";
 import { getWorkoutHistoryWithPRs } from "../utils/workoutPRHistory";
 import { useLocation } from "react-router-dom";
+import { useSwipeable } from "react-swipeable";
+import { AnimatePresence, motion } from "framer-motion";
+import { slideVariants } from "../utils/motionVariants";
 import WorkoutDetails from "../components/WorkoutDetails";
 import WorkoutCalendarModal from "../components/WorkoutCalendarModal";
 import "./Workouts.css";
@@ -35,6 +38,8 @@ function Workouts() {
   );
 
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+
+  const [direction, setDirection] = useState(0);
 
   const syncDateToHistory = () => {
     navigate(location.pathname, { replace: true, state: { selectedDate } });
@@ -78,15 +83,15 @@ function Workouts() {
   };
 
   const handlePrevious = () => {
+    setDirection(-1);
     setSelectedDate(date =>
       subDays(date, 1)
     );
   };
 
   const handleNext = () => {
-
     const today = startOfDay(new Date());
-
+    setDirection(1);
     setSelectedDate(date => {
       const nextDate = startOfDay(addDays(date, 1));
 
@@ -95,6 +100,19 @@ function Workouts() {
         : nextDate;
     });
   };
+
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: () => { if (!isSameDay(selectedDate, new Date())) handleNext(); },
+    onSwipedRight: () => handlePrevious(),
+    onSwiping: (eventData) => {
+      if (Math.abs(eventData.deltaX) > Math.abs(eventData.deltaY)) {
+        eventData.event.preventDefault?.();
+      }
+    },
+    preventScrollOnSwipe: false,
+    trackMouse: false,
+    touchEventOptions: { passive: false },
+  });
 
   if (isLoading) {
     return (
@@ -163,40 +181,53 @@ function Workouts() {
 
       </div>
 
-      <div className="workouts-body">
+      <div className="workouts-body" {...swipeHandlers}>
+        <AnimatePresence mode="wait" custom={direction}>
+          <motion.div key={selectedDate.toISOString()} custom={direction} variants={slideVariants}
+            initial="enter" animate="center" exit="exit" transition={{ duration: 0.2 }}>
 
-        {!currentWorkout ? (
+            {!currentWorkout ? (
 
-          <div className="empty-workout-log">
+              <div className="empty-workout-log">
 
-            <h2>No workout logged</h2>
+                <h2>No workout logged</h2>
 
-            <button
-              className="primary-btn"
-              onClick={() => {
-                syncDateToHistory();
-                navigate("/exercises", {
-                  state: {
-                    workoutDate: selectedDate
-                  }
-                })
-              }}
-            >
-              Start Workout
-            </button>
+                <button
+                  className="primary-btn"
+                  onClick={() => {
+                    syncDateToHistory();
+                    navigate("/exercises", {
+                      state: {
+                        workoutDate: selectedDate
+                      }
+                    })
+                  }}
+                >
+                  Start Workout
+                </button>
 
-          </div>
+              </div>
 
-        ) : (
+            ) : (
 
-          <WorkoutDetails
-            workout={currentWorkout}
-            onSelectedExercise={handleExerciseClick}
-            onAddExercise={handleAddExercise}
-          />
-        )}
-
+              <WorkoutDetails
+                workout={currentWorkout}
+                onSelectedExercise={handleExerciseClick}
+                onAddExercise={handleAddExercise}
+              />
+            )}
+          </motion.div>
+        </AnimatePresence>
       </div>
+
+      {currentWorkout && (
+        <button
+          className="add-exercise-workout-btn"
+          onClick={() => handleAddExercise(currentWorkout)}
+        >
+          <FiPlus size={28} />
+        </button>
+      )}
 
       <WorkoutCalendarModal
         isOpen={isCalendarOpen}

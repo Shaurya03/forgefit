@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { getWorkoutHistoryWithPRs } from "../utils/workoutPRHistory";
 import { useSwipeable } from "react-swipeable";
 import { AnimatePresence, motion } from "framer-motion";
+import { slideVariants } from "../utils/motionVariants";
 import DashboardFilter from "../components/DashboardFilter";
 import StatCard from "../components/StatCard";
 import PersonalRecordCard from "../components/PersonalRecordCard";
@@ -19,12 +20,6 @@ import VolumeChart from "../components/VolumeChart";
 import CategoryBreakdownChart from "../components/CategoryBreakdownChart";
 import "./Dashboard.css";
 import DashboardTabs from "../components/DashboardTabs";
-
-const slideVariants = {
-  enter: (dir) => ({ x: dir > 0 ? 40 : -40, opacity: 0 }),
-  center: { x: 0, opacity: 1 },
-  exit: (dir) => ({ x: dir > 0 ? -40 : 40, opacity: 0 }),
-};
 
 function Dashboard() {
   const { workouts } = useWorkoutContext();
@@ -127,7 +122,7 @@ function Dashboard() {
     },
     preventScrollOnSwipe: false,
     trackMouse: false,
-    touchEventOptions: { passive: false }, // required for preventDefault to actually work
+    touchEventOptions: { passive: false },
   });
 
   const handlePeriodChange = (newPeriod) => {

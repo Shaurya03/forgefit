@@ -1,13 +1,11 @@
 import { useSettings } from "../hooks/useSettings";
 import { getDisplayMetrics } from "../utils/derivedMetrics";
-import { FiPlus } from "react-icons/fi";
 import MetricValue from "./MetricValue";
 import "./WorkoutDetails.css";
 
 function WorkoutDetails({
   workout,
-  onSelectedExercise,
-  onAddExercise
+  onSelectedExercise
 }) {
 
   const { settings } = useSettings();
@@ -121,13 +119,6 @@ function WorkoutDetails({
         )}
 
       </div>
-
-      <button
-        className="add-exercise-workout-btn"
-        onClick={() => onAddExercise(workout)}
-      >
-        <FiPlus size={28} />
-      </button>
 
     </div>
   );

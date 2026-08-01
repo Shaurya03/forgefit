@@ -147,6 +147,30 @@
   color: var(--text-secondary);
 }
 
+.add-exercise-workout-btn {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  padding: .75rem 1rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--primary);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition:
+    background var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.add-exercise-workout-btn:hover {
+  background: var(--primary-hover);
+  box-shadow: var(--shadow-sm);
+}
+
 @media (max-width: 600px) {
 
   .workouts-page {
