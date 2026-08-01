@@ -69,6 +69,15 @@
   --transition-fast: .15s ease;
   --transition-normal: .25s ease;
 
+  button,
+  a,
+  .exercise-card,
+  .category-card,
+  .stat-card,
+  .pr-card {
+    -webkit-tap-highlight-color: transparent;
+  }
+
 }
 
 

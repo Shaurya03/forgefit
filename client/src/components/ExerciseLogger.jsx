@@ -63,6 +63,13 @@ function ExerciseLogger({
 
   const firstInputRef = useRef(null);
 
+  const distanceSelectRef = useRef(null);
+
+  const closeDistanceMenu = () => {
+    setIsDistanceMenuOpen(false);
+    distanceSelectRef.current?.blur();
+  };
+
   const weightUnit =
     metricValues.inputUnits.weight ??
     DEFAULT_WEIGHT_UNIT;
@@ -962,10 +969,11 @@ function ExerciseLogger({
 
                       {isDistanceMenuOpen && (
                         <Backdrop
-                          onClose={() => setIsDistanceMenuOpen(false)}
+                          onClose={closeDistanceMenu}
                         />
                       )}
                       <Select
+                        ref={distanceSelectRef}
                         value={{
                           value: distanceUnit,
                           label: distanceUnit
@@ -978,12 +986,14 @@ function ExerciseLogger({
                         isSearchable={false}
                         menuIsOpen={isDistanceMenuOpen}
                         onMenuOpen={() => setIsDistanceMenuOpen(true)}
-                        onMenuClose={() => setIsDistanceMenuOpen(false)}
+                        onMenuClose={closeDistanceMenu}
+                        blurInputOnSelect
                         menuPortalTarget={document.body}
                         menuPosition="fixed"
-                        onChange={(option) =>
+                        onChange={(option) => {
                           handleUnitChange("distance", option.value)
-                        }
+                          closeDistanceMenu();
+                        }}
                       />
                     </div>
                   )}

@@ -1,3 +1,7 @@
+const supportsHover =
+  typeof window !== "undefined" &&
+  window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
 export const reactSelectStyles = {
   control: (base, state) => ({
     ...base,
@@ -11,9 +15,11 @@ export const reactSelectStyles = {
     cursor: "pointer",
     transition: "all .15s ease",
 
-    "&:hover": {
-      borderColor: "var(--primary)"
-    }
+    ...(supportsHover && {
+      "&:hover": {
+        borderColor: "var(--primary)"
+      }
+    })
   }),
 
   valueContainer: (base) => ({
@@ -36,9 +42,11 @@ export const reactSelectStyles = {
       ? "var(--primary)"
       : "var(--text-secondary)",
 
-    "&:hover": {
-      color: "var(--primary)"
-    }
+    ...(supportsHover && {
+      "&:hover": {
+        color: "var(--primary)"
+      }
+    })
   }),
 
   menu: (base) => ({
@@ -71,7 +79,7 @@ export const reactSelectStyles = {
 
     backgroundColor: state.isSelected
       ? "var(--primary)"
-      : state.isFocused
+      : (state.isFocused && supportsHover)
         ? "var(--surface-hover)"
         : "var(--surface)",
 

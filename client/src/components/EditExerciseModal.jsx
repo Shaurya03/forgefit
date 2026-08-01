@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { reactSelectStyles } from "../styles/reactSelectStyles";
 import { Backdrop } from "./Backdrop";
 import { useBackButtonClose } from "../hooks/useBackButtonClose";
@@ -19,6 +19,13 @@ function EditExerciseModal({
   const [categoryId, setCategoryId] = useState("");
   const [error, setError] = useState("");
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
+
+  const categorySelectRef = useRef(null);
+
+  const closeCategoryMenu = () => {
+    setIsCategoryMenuOpen(false);
+    categorySelectRef.current?.blur();
+  };
 
   const handleClose = () => {
     setIsCategoryMenuOpen(false);
@@ -129,21 +136,24 @@ function EditExerciseModal({
 
       {isCategoryMenuOpen && (
         <Backdrop
-          onClose={() => setIsCategoryMenuOpen(false)}
+          onClose={closeCategoryMenu}
         />
       )}
       <Select
+        ref={categorySelectRef}
         options={categoryOptions}
         value={selectedOption}
         styles={reactSelectStyles}
         menuIsOpen={isCategoryMenuOpen}
         onMenuOpen={() => setIsCategoryMenuOpen(true)}
-        onMenuClose={() => setIsCategoryMenuOpen(false)}
+        onMenuClose={closeCategoryMenu}
+        blurInputOnSelect
         menuPortalTarget={document.body}
         menuPosition="fixed"
         onChange={(option) => {
           setCategoryId(option.value);
           setError("");
+          closeCategoryMenu();
         }}
         isSearchable={false}
       />
