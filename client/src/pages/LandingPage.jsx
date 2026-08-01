@@ -42,7 +42,7 @@ const FEATURES = [
   {
     title: "Metrics that fit the exercise",
     description:
-      "Weight and reps for lifting, distance and pace for cardio. Build categories with only the metrics that actually apply.",
+      "Weight and reps for lifting, distance and pace for cardio. Switch between kg/lb or km/mi anytime — even your old records convert instantly. Build categories with only the metrics that actually apply.",
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M4 21v-7M4 10V3M12 21v-11M12 6V3M20 21v-5M20 12V3" />
