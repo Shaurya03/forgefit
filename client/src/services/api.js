@@ -5,9 +5,10 @@ export const authFetch = async (url, options = {}) => {
   const response = await fetch(url, options);
 
   if (response.status === 401) {
+    const hadUser = localStorage.getItem("user");
     localStorage.removeItem("user");
 
-    if (window.location.pathname !== "/login") {
+    if (hadUser && window.location.pathname !== "/login") {
       window.location.href = "/login";
     }
   }

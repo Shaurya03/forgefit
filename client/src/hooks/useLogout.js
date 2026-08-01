@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "./useAuthContext";
 import { useSettingsContext } from "./useSettingsContext";
 import { useWorkoutContext } from "./useWorkoutContext";
@@ -5,6 +6,7 @@ import { useCategoryContext } from "./useCategoryContext";
 import { useExerciseContext } from "./useExerciseContext";
 
 export const useLogout = () => {
+  const navigate = useNavigate();
   const { dispatch: authDispatch } = useAuthContext();
   const { dispatch: settingsDispatch } = useSettingsContext();
   const { dispatch: workoutDispatch } = useWorkoutContext();
@@ -13,6 +15,8 @@ export const useLogout = () => {
 
   const logout = () => {
     localStorage.removeItem('user');
+
+    document.documentElement.removeAttribute('data-theme');
 
     authDispatch({ type: 'LOGOUT' });
 
@@ -35,6 +39,8 @@ export const useLogout = () => {
       type: "SET_EXERCISES",
       payload: []
     });
+
+    navigate('/');
   };
 
   return { logout };
