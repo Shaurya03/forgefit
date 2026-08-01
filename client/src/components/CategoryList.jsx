@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import CategoryCard from "./CategoryCard";
 import CreateCategoryModal from "./CreateCategoryModal";
 import EditCategoryModal from "./EditCategoryModal";
@@ -116,18 +117,29 @@ function CategoryList({
 
           <div className="category-list">
 
-            {categories.map((category) => (
-              <CategoryCard
-                key={category._id}
-                category={category}
-                exerciseCount={exerciseCounts[category._id ?? 0]}
-                openCategoryMenu={openCategoryMenu}
-                setOpenCategoryMenu={setOpenCategoryMenu}
-                onSelect={() => onSelectCategory(category)}
-                onEditCategory={handleEditCategory}
-                onDeleteCategory={handleDeleteCategory}
-              />
-            ))}
+            <AnimatePresence>
+              {categories.map((category) => (
+                <motion.div
+                  className="category-cards"
+                  key={category._id}
+                  layout
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.18 }}
+                >
+                  <CategoryCard
+                    category={category}
+                    exerciseCount={exerciseCounts[category._id ?? 0]}
+                    openCategoryMenu={openCategoryMenu}
+                    setOpenCategoryMenu={setOpenCategoryMenu}
+                    onSelect={() => onSelectCategory(category)}
+                    onEditCategory={handleEditCategory}
+                    onDeleteCategory={handleDeleteCategory}
+                  />
+                </motion.div>
+              ))}
+            </AnimatePresence>
 
           </div>
 

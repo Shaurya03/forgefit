@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FiArrowLeft } from "react-icons/fi";
+import { AnimatePresence, motion } from "framer-motion";
 import ExerciseCard from "./ExerciseCard";
 import CreateExerciseModal from "./CreateExerciseModal";
 import EditExerciseModal from "./EditExerciseModal";
@@ -132,31 +133,40 @@ function ExerciseList({
 
         ) : (
 
-          filteredExercises.map((exercise) => (
+          <AnimatePresence>
+            {filteredExercises.map((exercise) => (
 
-            <div className="exercise-cards">
-              <ExerciseCard
+              <motion.div
+                className="exercise-cards"
                 key={exercise._id}
-                mode="manage"
-                exercise={exercise}
-                openExerciseMenu={openExerciseMenu}
-                setOpenExerciseMenu={setOpenExerciseMenu}
-                onClick={() =>
-                  onSelectExercise(exercise)
-                }
-                onHistory={() =>
-                  setHistoryExercise(exercise)
-                }
-                onEdit={() =>
-                  handleEditExercise(exercise)
-                }
-                onDelete={() =>
-                  handleDeleteExercise(exercise)
-                }
-              />
-            </div>
+                layout
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.18 }}
+              >
+                <ExerciseCard
+                  mode="manage"
+                  exercise={exercise}
+                  openExerciseMenu={openExerciseMenu}
+                  setOpenExerciseMenu={setOpenExerciseMenu}
+                  onClick={() =>
+                    onSelectExercise(exercise)
+                  }
+                  onHistory={() =>
+                    setHistoryExercise(exercise)
+                  }
+                  onEdit={() =>
+                    handleEditExercise(exercise)
+                  }
+                  onDelete={() =>
+                    handleDeleteExercise(exercise)
+                  }
+                />
+              </motion.div>
 
-          ))
+            ))}
+          </AnimatePresence>
         )}
 
       </div>
