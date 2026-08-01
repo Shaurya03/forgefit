@@ -1,3 +1,4 @@
+import { useCountUp } from "../hooks/useCountUp";
 import "./StatCard.css";
 
 function StatCard({
@@ -7,13 +8,15 @@ function StatCard({
   extra,
   children
 }) {
+  const isNumeric = typeof value === "number";
+  const animatedValue = useCountUp(isNumeric ? value : 0);
 
   return (
 
     <div className="stat-card">
 
       <h3 className="stat-title">{title}</h3>
-      <p className="stat-value">{value}</p>
+      <p className="stat-value">{isNumeric ? animatedValue : value}</p>
       {
         subtitle &&
         <small className="stat-subtitle">{subtitle}</small>

@@ -1,3 +1,4 @@
+import { useCountUp } from "../hooks/useCountUp";
 import "./PersonalRecordCard.css";
 
 function PersonalRecordCard({
@@ -8,6 +9,8 @@ function PersonalRecordCard({
   date,
   onViewWorkout
 }) {
+  const isNumeric = typeof value === "number";
+  const animatedValue = useCountUp(isNumeric ? value : 0);
 
   return (
     <div className="pr-card">
@@ -16,7 +19,7 @@ function PersonalRecordCard({
 
         <h3 className="pr-title">{title}</h3>
 
-        <p className="pr-value">{value}</p>
+        <p className="pr-value">{isNumeric ? animatedValue : value}</p>
 
         <div className="pr-details">
 
