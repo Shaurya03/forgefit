@@ -10,8 +10,8 @@ import ExerciseLogger from "../components/ExerciseLogger";
 
 import "./Exercises.css";
 
-const SESSION_CATEGORY_KEY = "exercises:lastCategoryId";
-const SESSION_EXERCISE_KEY = "exercises:lastExerciseId";
+export const SESSION_CATEGORY_KEY = "exercises:lastCategoryId";
+export const SESSION_EXERCISE_KEY = "exercises:lastExerciseId";
 
 function Exercises() {
   const location = useLocation();

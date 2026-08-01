@@ -4,6 +4,7 @@ import { useSettingsContext } from "./useSettingsContext";
 import { useWorkoutContext } from "./useWorkoutContext";
 import { useCategoryContext } from "./useCategoryContext";
 import { useExerciseContext } from "./useExerciseContext";
+import { SESSION_CATEGORY_KEY, SESSION_EXERCISE_KEY } from "../pages/Exercises";
 
 export const useLogout = () => {
   const navigate = useNavigate();
@@ -15,6 +16,8 @@ export const useLogout = () => {
 
   const logout = () => {
     localStorage.removeItem('user');
+    sessionStorage.removeItem(SESSION_CATEGORY_KEY);
+    sessionStorage.removeItem(SESSION_EXERCISE_KEY);
 
     document.documentElement.removeAttribute('data-theme');
 
