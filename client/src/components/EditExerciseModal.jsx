@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { createPortal } from "react-dom";
 import { reactSelectStyles } from "../styles/reactSelectStyles";
 import { Backdrop } from "./Backdrop";
 import { useBackButtonClose } from "../hooks/useBackButtonClose";
 import MetricSelector from "./MetricSelector";
 import Select from "react-select";
+import AnimatedModal from "./AnimatedModal";
 import "./Modal.css";
 
 function EditExerciseModal({
@@ -47,10 +47,6 @@ function EditExerciseModal({
 
   const shouldAutoFocus =
     !window.matchMedia("(pointer: coarse)").matches;
-
-  if (!isOpen) {
-    return null;
-  }
 
   const formatExerciseName = (name) =>
     name
@@ -110,80 +106,71 @@ function EditExerciseModal({
       option => option.value === categoryId
     ) || null;
 
-  return createPortal(
-    <div
-      className="modal-overlay"
-      onClick={handleClose}
-    >
-      <div
-        className="modal"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <h2>Edit Exercise</h2>
+  return (
+    <AnimatedModal isOpen={isOpen} onClose={handleClose}>
+      <h2>Edit Exercise</h2>
 
-        <input
-          value={name}
-          onChange={(event) => {
-            setName(event.target.value)
-            setError("");
-          }}
-          autoFocus={shouldAutoFocus}
-          placeholder="Enter Exercise name"
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              handleSubmit();
-            }
-          }}
+      <input
+        value={name}
+        onChange={(event) => {
+          setName(event.target.value)
+          setError("");
+        }}
+        autoFocus={shouldAutoFocus}
+        placeholder="Enter Exercise name"
+        onKeyDown={(event) => {
+          if (event.key === "Enter") {
+            handleSubmit();
+          }
+        }}
+      />
+
+      <label>Category</label>
+
+      {isCategoryMenuOpen && (
+        <Backdrop
+          onClose={() => setIsCategoryMenuOpen(false)}
         />
+      )}
+      <Select
+        options={categoryOptions}
+        value={selectedOption}
+        styles={reactSelectStyles}
+        menuIsOpen={isCategoryMenuOpen}
+        onMenuOpen={() => setIsCategoryMenuOpen(true)}
+        onMenuClose={() => setIsCategoryMenuOpen(false)}
+        menuPortalTarget={document.body}
+        menuPosition="fixed"
+        onChange={(option) => {
+          setCategoryId(option.value);
+          setError("");
+        }}
+        isSearchable={false}
+      />
 
-        <label>Category</label>
+      <h3>Metrics</h3>
 
-        {isCategoryMenuOpen && (
-          <Backdrop
-            onClose={() => setIsCategoryMenuOpen(false)}
-          />
-        )}
-        <Select
-          options={categoryOptions}
-          value={selectedOption}
-          styles={reactSelectStyles}
-          menuIsOpen={isCategoryMenuOpen}
-          onMenuOpen={() => setIsCategoryMenuOpen(true)}
-          onMenuClose={() => setIsCategoryMenuOpen(false)}
-          menuPortalTarget={document.body}
-          menuPosition="fixed"
-          onChange={(option) => {
-            setCategoryId(option.value);
-            setError("");
-          }}
-          isSearchable={false}
-        />
+      <MetricSelector
+        selectedMetrics={metrics}
+        onToggle={toggleMetric}
+      />
 
-        <h3>Metrics</h3>
+      {error && (
+        <p className="modal-error">
+          {error}
+        </p>
+      )}
 
-        <MetricSelector
-          selectedMetrics={metrics}
-          onToggle={toggleMetric}
-        />
+      <div className="modal-actions">
+        <button onClick={handleSubmit}>
+          Save
+        </button>
 
-        {error && (
-          <p className="modal-error">
-            {error}
-          </p>
-        )}
-
-        <div className="modal-actions">
-          <button onClick={handleSubmit}>
-            Save
-          </button>
-
-          <button onClick={handleClose}>
-            Cancel
-          </button>
-        </div>
+        <button onClick={handleClose}>
+          Cancel
+        </button>
       </div>
-    </div>,
-    document.body
+    </AnimatedModal>
   );
 };
 

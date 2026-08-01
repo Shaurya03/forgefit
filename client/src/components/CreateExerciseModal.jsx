@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { createPortal } from "react-dom";
 import { useBackButtonClose } from "../hooks/useBackButtonClose";
 import MetricSelector from "./MetricSelector";
+import AnimatedModal from "./AnimatedModal";
 import "./Modal.css";
 
 function CreateExerciseModal({
@@ -41,10 +41,6 @@ function CreateExerciseModal({
 
   const shouldAutoFocus =
     !window.matchMedia("(pointer: coarse)").matches;
-
-  if (!isOpen) {
-    return null;
-  }
 
   const formatExerciseName = (name) =>
     name
@@ -96,71 +92,62 @@ function CreateExerciseModal({
     }
   };
 
-  return createPortal(
-    <div
-      className="modal-overlay"
-      onClick={handleClose}
-    >
-      <div
-        className="modal"
-        onClick={(event) => event.stopPropagation()}
-      >
+  return (
+    <AnimatedModal isOpen={isOpen} onClose={handleClose}>
 
-        <h2>Create Exercise</h2>
+      <h2>Create Exercise</h2>
 
-        <p className="modal-category">
-          Category: {selectedCategory?.name}
+      <p className="modal-category">
+        Category: {selectedCategory?.name}
+      </p>
+
+      <input
+        value={name}
+        onChange={(event) => {
+          setName(event.target.value);
+          setError("");
+        }}
+        autoFocus={shouldAutoFocus}
+        placeholder="Exercise name"
+        onKeyDown={(event) => {
+          if (event.key === "Enter") {
+            handleSubmit();
+          }
+        }}
+      />
+
+      <h3>Metrics</h3>
+
+      <MetricSelector
+        selectedMetrics={metrics}
+        onToggle={toggleMetric}
+      />
+
+      {error && (
+        <p className="modal-error">
+          {error}
         </p>
+      )}
 
-        <input
-          value={name}
-          onChange={(event) => {
-            setName(event.target.value);
-            setError("");
-          }}
-          autoFocus={shouldAutoFocus}
-          placeholder="Exercise name"
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              handleSubmit();
-            }
-          }}
-        />
+      <div className="modal-actions">
 
-        <h3>Metrics</h3>
+        <button
+          type="button"
+          onClick={handleSubmit}
+        >
+          Create
+        </button>
 
-        <MetricSelector
-          selectedMetrics={metrics}
-          onToggle={toggleMetric}
-        />
-
-        {error && (
-          <p className="modal-error">
-            {error}
-          </p>
-        )}
-
-        <div className="modal-actions">
-
-          <button
-            type="button"
-            onClick={handleSubmit}
-          >
-            Create
-          </button>
-
-          <button
-            type="button"
-            onClick={handleClose}
-          >
-            Cancel
-          </button>
-
-        </div>
+        <button
+          type="button"
+          onClick={handleClose}
+        >
+          Cancel
+        </button>
 
       </div>
-    </div>,
-    document.body
+
+    </AnimatedModal>
   );
 }
 

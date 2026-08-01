@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useSettings } from "../hooks/useSettings";
 import { API_BASE_URL, authFetch } from "../services/api";
 import { getHistoryWithPRs } from "../utils/prHistory";
 import { useBackButtonClose } from "../hooks/useBackButtonClose";
 import HistoryWorkoutCard from "./HistoryWorkoutCard";
+import AnimatedModal from "./AnimatedModal";
 import "./Modal.css";
 
 function ExerciseHistoryModal({
@@ -65,64 +65,48 @@ function ExerciseHistoryModal({
     fetchHistory();
   }, [exerciseId, isOpen, user]);
 
-  if (!isOpen) {
-    return null;
-  }
-
   const historyWithPRs = getHistoryWithPRs(
     history,
     settings.distanceSystem
   );
 
-  return createPortal(
+  return (
+    <AnimatedModal className="history-modal" isOpen={isOpen} onClose={onClose}>
 
-    <div
-      className="modal-overlay"
-      onClick={onClose}
-    >
+      <h2>Exercise History</h2>
 
-      <div
-        className="modal history-modal"
-        onClick={(event) => event.stopPropagation()}
-      >
+      <div className="history-modal-content">
 
-        <h2>Exercise History</h2>
+        {isLoading && <p>Loading history...</p>}
 
-        <div className="history-modal-content">
+        {error && <p>{error}</p>}
 
-          {isLoading && <p>Loading history...</p>}
+        {!isLoading &&
+          !error &&
+          history.length === 0 && (
+            <p>No workout history yet.</p>
+          )}
 
-          {error && <p>{error}</p>}
-
-          {!isLoading &&
-            !error &&
-            history.length === 0 && (
-              <p>No workout history yet.</p>
-            )}
-
-          {!isLoading &&
-            !error &&
-            historyWithPRs.map(workout => (
-              <HistoryWorkoutCard
-                key={workout.workoutId}
-                workout={workout}
-              />
-            ))}
-        </div>
-
-        <div className="modal-actions">
-          <button
-            type="button"
-            onClick={onClose}
-          >
-            Close
-          </button>
-        </div>
-
+        {!isLoading &&
+          !error &&
+          historyWithPRs.map(workout => (
+            <HistoryWorkoutCard
+              key={workout.workoutId}
+              workout={workout}
+            />
+          ))}
       </div>
 
-    </div>,
-    document.body
+      <div className="modal-actions">
+        <button
+          type="button"
+          onClick={onClose}
+        >
+          Close
+        </button>
+      </div>
+
+    </AnimatedModal>
   );
 }
 

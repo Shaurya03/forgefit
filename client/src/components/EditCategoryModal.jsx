@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { createPortal } from "react-dom";
 import { useBackButtonClose } from "../hooks/useBackButtonClose";
 import MetricSelector from "./MetricSelector";
+import AnimatedModal from "./AnimatedModal";
 import "./Modal.css";
 
 function EditCategoryModal({
@@ -36,10 +36,6 @@ function EditCategoryModal({
 
   const shouldAutoFocus =
     !window.matchMedia("(pointer: coarse)").matches;
-
-  if (!isOpen) {
-    return null;
-  }
 
   const formatCategoryName = (name) =>
     name
@@ -93,58 +89,49 @@ function EditCategoryModal({
 
   };
 
-  return createPortal(
-    <div
-      className="modal-overlay"
-      onClick={handleClose}
-    >
-      <div
-        className="modal"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <h2>Edit Category</h2>
+  return (
+    <AnimatedModal isOpen={isOpen} onClose={handleClose}>
+      <h2>Edit Category</h2>
 
-        <input
-          value={categoryName}
-          onChange={(event) => {
-            setCategoryName(event.target.value)
-            setError("");
-          }}
-          placeholder="Enter Category name"
-          maxLength={40}
-          autoFocus={shouldAutoFocus}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              handleSubmit();
-            }
-          }}
-        />
+      <input
+        value={categoryName}
+        onChange={(event) => {
+          setCategoryName(event.target.value)
+          setError("");
+        }}
+        placeholder="Enter Category name"
+        maxLength={40}
+        autoFocus={shouldAutoFocus}
+        onKeyDown={(event) => {
+          if (event.key === "Enter") {
+            handleSubmit();
+          }
+        }}
+      />
 
-        <h3>Metrics</h3>
+      <h3>Metrics</h3>
 
-        <MetricSelector
-          selectedMetrics={metrics}
-          onToggle={toggleMetric}
-        />
+      <MetricSelector
+        selectedMetrics={metrics}
+        onToggle={toggleMetric}
+      />
 
-        {error && (
-          <p className="modal-error">
-            {error}
-          </p>
-        )}
+      {error && (
+        <p className="modal-error">
+          {error}
+        </p>
+      )}
 
-        <div className="modal-actions">
-          <button onClick={handleSubmit}>
-            Save
-          </button>
+      <div className="modal-actions">
+        <button onClick={handleSubmit}>
+          Save
+        </button>
 
-          <button onClick={handleClose}>
-            Cancel
-          </button>
-        </div>
+        <button onClick={handleClose}>
+          Cancel
+        </button>
       </div>
-    </div>,
-    document.body
+    </AnimatedModal>
   );
 };
 
