@@ -109,7 +109,7 @@ export default function LandingPage() {
           <div className="ff-nav-links">
             <a href="#features">Features</a>
             <a href="#showcase">Showcase</a>
-            <a href="https://github.com/Shaurya03/fitness-project" target="_blank" rel="noreferrer">
+            <a href="https://github.com/Shaurya03/forgefit.git" target="_blank" rel="noreferrer">
               GitHub
             </a>
           </div>
@@ -141,7 +141,7 @@ export default function LandingPage() {
               Start training
             </Link>
             <a
-              href="https://github.com/Shaurya03/fitness-project"
+              href="https://github.com/Shaurya03/forgefit.git"
               target="_blank"
               rel="noreferrer"
               className="ff-btn ff-btn-ghost"
@@ -233,7 +233,7 @@ export default function LandingPage() {
                 Get started
               </Link>
               <a
-                href="https://github.com/Shaurya03/fitness-project"
+                href="https://github.com/Shaurya03/forgefit.git"
                 target="_blank"
                 rel="noreferrer"
                 className="ff-btn ff-btn-ghost"
@@ -257,7 +257,7 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="ff-footer-links">
-            <a href="https://github.com/Shaurya03/fitness-project" target="_blank" rel="noreferrer">
+            <a href="https://github.com/Shaurya03/forgefit.git" target="_blank" rel="noreferrer">
               GitHub
             </a>
             <a href="#features">Features</a>

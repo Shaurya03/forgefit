@@ -32,8 +32,8 @@ A full-stack fitness tracking app for logging workouts, tracking exercises by ca
 
 ### 1. Clone the repo
 ```bash
-git clone https://github.com/Shaurya03/fitness-project.git
-cd fitness-project
+git clone https://github.com/Shaurya03/forgefit.git
+cd forgefit
 ```
 
 ### 2. Server setup
@@ -96,7 +96,7 @@ The build includes a generated service worker (via `vite-plugin-pwa`) for offlin
 ## Project Structure
 
 ```
-fitness-project/
+forgefit/
 ├── client/     # React + Vite frontend
 └── server/     # Express + MongoDB backend
 ```
