@@ -153,8 +153,7 @@ function Login() {
             text="continue_with"
             theme="filled_black"
             shape="rectangular"
-            size="large"
-            width="100%"
+            size="medium"
             useOneTap={false}
             auto_select={false}
             itp_support={false}
