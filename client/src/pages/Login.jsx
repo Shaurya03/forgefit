@@ -156,6 +156,8 @@ function Login() {
             size="large"
             width="100%"
             useOneTap={false}
+            auto_select={false}
+            itp_support={false}
           />
         </div>
 
