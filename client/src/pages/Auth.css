@@ -169,7 +169,6 @@
 }
 
 .google-login-wrapper {
-  width: 100%;
   display: flex;
   justify-content: center;
   margin-top: 0.5rem;
@@ -177,12 +176,7 @@
   border-radius: var(--radius-md);
 }
 
-.google-login-wrapper>div {
-  width: 100% !important;
-}
-
 .google-login-wrapper iframe {
-  width: 100% !important;
   border-radius: var(--radius-md);
 }
 
