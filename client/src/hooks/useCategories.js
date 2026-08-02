@@ -1,6 +1,7 @@
 import { authFetch } from "../services/api";
 import { useCategoryContext } from "./useCategoryContext";
 import { useAuthContext } from "./useAuthContext";
+import { API_BASE_URL } from "../services/api";
 
 export const useCategories = () => {
   const { categories, dispatch } = useCategoryContext();
@@ -9,7 +10,7 @@ export const useCategories = () => {
   const fetchCategories = async () => {
     if (!user) return;
 
-    const response = await authFetch("/api/categories", {
+    const response = await authFetch(`${API_BASE_URL}/categories`, {
       headers: {
         Authorization: `Bearer ${user.token}`
       }
@@ -28,7 +29,7 @@ export const useCategories = () => {
   const createCategory = async (categoryData) => {
     if (!user) return;
 
-    const response = await authFetch("/api/categories", {
+    const response = await authFetch(`${API_BASE_URL}/categories`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -56,7 +57,7 @@ export const useCategories = () => {
   const updateCategory = async (id, categoryData) => {
     if (!user) return;
 
-    const response = await authFetch(`/api/categories/${id}`, {
+    const response = await authFetch(`${API_BASE_URL}/categories/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -82,7 +83,7 @@ export const useCategories = () => {
   const deleteCategory = async (id) => {
     if (!user) return;
 
-    const response = await authFetch(`/api/categories/${id}`, {
+    const response = await authFetch(`${API_BASE_URL}/categories/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${user.token}`

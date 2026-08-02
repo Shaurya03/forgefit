@@ -1,6 +1,7 @@
 import { useSettingsContext } from "./useSettingsContext";
 import { authFetch } from "../services/api";
 import { useAuthContext } from "./useAuthContext";
+import { API_BASE_URL } from "../services/api";
 
 export const useSettings = () => {
 
@@ -32,7 +33,7 @@ export const useSettings = () => {
     if (!user) return;
 
     const response = await authFetch(
-      "/api/settings",
+      `${API_BASE_URL}/settings`,
       {
         headers: {
           Authorization: `Bearer ${user.token}`
@@ -62,7 +63,7 @@ export const useSettings = () => {
     if (!user) return;
 
     const response = await authFetch(
-      "/api/settings",
+      `${API_BASE_URL}/settings`,
       {
         method: "PATCH",
         headers: {
