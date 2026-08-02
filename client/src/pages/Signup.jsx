@@ -149,7 +149,8 @@ function Signup() {
             text="continue_with"
             theme="filled_black"
             shape="rectangular"
-            size="medium"
+            size="large"
+            width="100%"
             useOneTap={false}
             auto_select={false}
             itp_support={false}
