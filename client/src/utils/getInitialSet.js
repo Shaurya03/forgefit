@@ -83,17 +83,7 @@ export function getInitialSet({
     return currentExercise.sets.at(-1);
   }
 
-  // Adding an exercise to an old workout
-  if (
-    !isSameDay(
-      new Date(workoutDate),
-      new Date()
-    )
-  ) {
-    return null;
-  }
-
-  // Adding a new exercise to today's workout
+  // Adding a new exercise to today's workout or to a past workout
   const previousExercise =
     exerciseHistory
       .filter(workout =>
