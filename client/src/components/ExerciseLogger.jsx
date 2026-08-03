@@ -18,6 +18,9 @@ import { getInitialSet } from "../utils/getInitialSet";
 import { isSameDay } from "date-fns";
 import { Backdrop } from "./Backdrop";
 import { useBackButtonClose } from "../hooks/useBackButtonClose";
+import { useSwipeable } from "react-swipeable";
+import { AnimatePresence, motion } from "framer-motion";
+import { slideVariants } from "../utils/motionVariants";
 import MetricValue from "./MetricValue";
 import HistoryWorkoutCard from "./HistoryWorkoutCard";
 import Select from "react-select";
@@ -60,6 +63,30 @@ function ExerciseLogger({
   const [selectedSetIndex, setSelectedSetIndex] = useState(null);
 
   const [activeTab, setActiveTab] = useState("logger");
+  const [tabDirection, setTabDirection] = useState(0);
+
+  const TAB_ORDER = ["logger", "history"];
+
+  const handleTabChange = (tab) => {
+    if (tab === activeTab) return;
+    setTabDirection(
+      TAB_ORDER.indexOf(tab) > TAB_ORDER.indexOf(activeTab) ? 1 : -1
+    );
+    setActiveTab(tab);
+  };
+
+  const tabSwipeHandlers = useSwipeable({
+    onSwipedLeft: () => handleTabChange("history"),
+    onSwipedRight: () => handleTabChange("logger"),
+    onSwiping: (eventData) => {
+      if (Math.abs(eventData.deltaX) > Math.abs(eventData.deltaY)) {
+        eventData.event.preventDefault?.();
+      }
+    },
+    preventScrollOnSwipe: false,
+    trackMouse: false,
+    touchEventOptions: { passive: false },
+  });
 
   const firstInputRef = useRef(null);
 
@@ -813,14 +840,14 @@ function ExerciseLogger({
         <div className="logger-tabs">
           <button
             className={`logger-tab ${activeTab === "logger" ? "active" : ""}`}
-            onClick={() => setActiveTab("logger")}
+            onClick={() => handleTabChange("logger")}
           >
             Track
           </button>
 
           <button
             className={`logger-tab ${activeTab === "history" ? "active" : ""}`}
-            onClick={() => setActiveTab("history")}
+            onClick={() => handleTabChange("history")}
           >
             History
           </button>
@@ -1048,80 +1075,93 @@ function ExerciseLogger({
 
       {/* ---- Scrollable bottom section. Only this part scrolls; the
           section above is always visible. ---- */}
-      <div className="logger-bottom">
-        {activeTab === "logger" && (
-          <div className="logged-sets">
-            {loggedSetsWithPRs.length === 0 ? (
-              <p className="logged-sets-empty">No sets logged yet.</p>
-            ) : (
-              <div className="logged-sets-body">
-                {loggedSetsWithPRs.map((set, index) => {
-                  const displayMetrics =
-                    getDisplayMetrics(
-                      set.metrics,
-                      settings.distanceSystem
-                    );
+      <div className="logger-bottom" {...tabSwipeHandlers}>
+        <AnimatePresence mode="wait" custom={tabDirection}>
+          <motion.div
+            key={activeTab}
+            custom={tabDirection}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ duration: 0.2 }}
+          >
+            {activeTab === "logger" && (
+              <div className="logged-sets">
+                {loggedSetsWithPRs.length === 0 ? (
+                  <p className="logged-sets-empty">No sets logged yet.</p>
+                ) : (
+                  <div className="logged-sets-body">
+                    {loggedSetsWithPRs.map((set, index) => {
+                      const displayMetrics =
+                        getDisplayMetrics(
+                          set.metrics,
+                          settings.distanceSystem
+                        );
 
-                  return (
-                    <div
-                      key={index}
-                      className={`logged-set ${selectedSetIndex === index
-                        ? "selected"
-                        : ""
-                        }`}
-                      onClick={() => handleSelectSet(set, index)}
-                    >
+                      return (
+                        <div
+                          key={index}
+                          className={`logged-set ${selectedSetIndex === index
+                            ? "selected"
+                            : ""
+                            }`}
+                          onClick={() => handleSelectSet(set, index)}
+                        >
 
-                      <div className="set-values">
-                        {displayMetrics.map(({ key, value }) => (
+                          <div className="set-values">
+                            {displayMetrics.map(({ key, value }) => (
 
-                          <span
-                            className="set-value"
-                            key={key}
-                          >
+                              <span
+                                className="set-value"
+                                key={key}
+                              >
 
-                            <MetricValue
-                              metric={key}
-                              value={value}
-                              settings={settings}
-                              inputUnits={set.inputUnits}
-                              className="logger-metric-value"
-                            />
+                                <MetricValue
+                                  metric={key}
+                                  value={value}
+                                  settings={settings}
+                                  inputUnits={set.inputUnits}
+                                  className="logger-metric-value"
+                                />
 
-                            {set.personalRecords?.[key] && (
-                              <span className="prs-trophy">
-                                🏆
+                                {set.personalRecords?.[key] && (
+                                  <span className="prs-trophy">
+                                    🏆
+                                  </span>
+                                )}
+
                               </span>
-                            )}
 
-                          </span>
-
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })}
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             )}
-          </div>
-        )}
 
-        {activeTab === "history" && (
-          <div className="exercise-history">
-            {exerciseHistory.length === 0 ? (
-              <p className="logged-sets-empty">No history yet.</p>
-            ) : (
-              historyWithPRs.map(workout => (
-                <HistoryWorkoutCard
-                  key={workout._id}
-                  workout={workout}
-                />
-              ))
+            {activeTab === "history" && (
+              <div className="exercise-history">
+                {exerciseHistory.length === 0 ? (
+                  <p className="logged-sets-empty">No history yet.</p>
+                ) : (
+                  historyWithPRs.map(workout => (
+                    <HistoryWorkoutCard
+                      key={workout._id}
+                      workout={workout}
+                    />
+                  ))
+                )}
+              </div>
             )}
-          </div>
-        )}
 
+          </motion.div>
+        </AnimatePresence>
       </div>
+
     </div>
   );
 }
