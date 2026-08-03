@@ -3,7 +3,8 @@ import { useLocation } from "react-router-dom";
 import { useBackButtonClose } from "../hooks/useBackButtonClose";
 import { useCategories } from "../hooks/useCategories";
 import { useExercises } from "../hooks/useExercises";
-
+import { AnimatePresence, motion } from "framer-motion";
+import { slideVariants } from "../utils/motionVariants";
 import CategoryList from "../components/CategoryList";
 import ExerciseList from "../components/ExerciseList";
 import ExerciseLogger from "../components/ExerciseLogger";
@@ -40,6 +41,18 @@ function Exercises() {
   const [selectedExercise, setSelectedExercise] =
     useState(null);
 
+  const [viewDirection, setViewDirection] = useState(1);
+
+  const handleSelectCategory = (category) => {
+    setViewDirection(1);
+    setSelectedCategory(category);
+  };
+
+  const handleSelectExercise = (exercise) => {
+    setViewDirection(1);
+    setSelectedExercise(exercise);
+  };
+
   const selectedExerciseId =
     location.state?.selectedExerciseId;
 
@@ -55,15 +68,23 @@ function Exercises() {
   const isDirectEditEntry = mode === "edit" && Boolean(selectedExerciseId);
 
   const handleBackFromExerciseList = () => {
+    setViewDirection(-1);
     setSearchTerm("");
     setSelectedCategory(null);
     sessionStorage.removeItem(SESSION_CATEGORY_KEY);
   };
 
   const handleBackFromLogger = () => {
+    setViewDirection(-1);
     setSelectedExercise(null);
     sessionStorage.removeItem(SESSION_EXERCISE_KEY);
   };
+
+  const currentView = selectedExercise
+    ? "logger"
+    : selectedCategory
+      ? "exerciseList"
+      : "category";
 
   useBackButtonClose(
     !isDirectEditEntry && Boolean(selectedCategory),
@@ -170,43 +191,55 @@ function Exercises() {
         className={`exercises-container ${selectedExercise ? "logger-mode" : ""
           }`}
       >
+        <AnimatePresence mode="wait" custom={viewDirection}>
+          <motion.div
+            key={currentView}
+            custom={viewDirection}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ duration: 0.2 }}
+          >
 
-        {!selectedCategory && (
-          <CategoryList
-            categories={categories || []}
-            exercises={exercises || []}
-            createCategory={createCategory}
-            updateCategory={updateCategory}
-            deleteCategory={deleteCategory}
-            onSelectCategory={setSelectedCategory}
-          />
-        )}
+            {currentView === "category" && (
+              <CategoryList
+                categories={categories || []}
+                exercises={exercises || []}
+                createCategory={createCategory}
+                updateCategory={updateCategory}
+                deleteCategory={deleteCategory}
+                onSelectCategory={handleSelectCategory}
+              />
+            )}
 
-        {selectedCategory && !selectedExercise && (
-          <ExerciseList
-            category={selectedCategory}
-            categories={categories || []}
-            exercises={exercises || []}
-            createExercise={createExercise}
-            updateExercise={updateExercise}
-            deleteExercise={deleteExercise}
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            onBack={handleBackFromExerciseList}
-            onSelectExercise={setSelectedExercise}
-          />
-        )}
+            {currentView === "exerciseList" && (
+              <ExerciseList
+                category={selectedCategory}
+                categories={categories || []}
+                exercises={exercises || []}
+                createExercise={createExercise}
+                updateExercise={updateExercise}
+                deleteExercise={deleteExercise}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                onBack={handleBackFromExerciseList}
+                onSelectExercise={handleSelectExercise}
+              />
+            )}
 
-        {selectedExercise && (
-          <ExerciseLogger
-            exercise={selectedExercise}
-            workoutId={workoutId}
-            workoutDate={workoutDate}
-            onBack={handleBackFromLogger}
-            mode={mode}
-          />
-        )}
+            {currentView === "logger" && (
+              <ExerciseLogger
+                exercise={selectedExercise}
+                workoutId={workoutId}
+                workoutDate={workoutDate}
+                onBack={handleBackFromLogger}
+                mode={mode}
+              />
+            )}
 
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );
