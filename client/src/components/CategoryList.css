@@ -38,6 +38,8 @@
   display: flex;
   flex-direction: column;
   height: calc(100vh - 73px);
+  height: calc(100dvh - 73px);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .category-list-top {
@@ -70,10 +72,6 @@
 }
 
 @media (max-width:600px) {
-
-  .category-list-page {
-    height: calc(100vh - 130px);
-  }
 
   .category-list-top {
     padding: 16px;

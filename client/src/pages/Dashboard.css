@@ -1,6 +1,8 @@
 .dashboard {
   max-width: 1400px;
   height: calc(100vh - 73px);
+  height: calc(100dvh - 73px);
+  padding-bottom: env(safe-area-inset-bottom);
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -48,10 +50,6 @@
 }
 
 @media (max-width: 600px) {
-
-  .dashboard {
-    height: calc(100vh - 130px);
-  }
 
   .dashboard-top {
     padding: var(--space-md);
