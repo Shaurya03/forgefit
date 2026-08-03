@@ -76,7 +76,8 @@ function Workouts() {
       state: {
         workoutId: workout._id,
         workoutDate: workout.date,
-        mode: "add"
+        mode: "add",
+        startFresh: true
       }
     });
 
@@ -198,7 +199,8 @@ function Workouts() {
                     syncDateToHistory();
                     navigate("/exercises", {
                       state: {
-                        workoutDate: selectedDate
+                        workoutDate: selectedDate,
+                        startFresh: true
                       }
                     })
                   }}

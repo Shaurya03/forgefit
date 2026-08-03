@@ -50,6 +50,7 @@ function Exercises() {
     location.state?.workoutDate;
 
   const mode = location.state?.mode;
+  const startFresh = location.state?.startFresh;
 
   const isDirectEditEntry = mode === "edit" && Boolean(selectedExerciseId);
 
@@ -88,11 +89,18 @@ function Exercises() {
   const hasRestoredRef = useRef(false);
 
   useEffect(() => {
-    if (
-      hasRestoredRef.current ||
-      categories.length === 0 ||
-      exercises.length === 0
-    ) {
+    if (hasRestoredRef.current) {
+      return;
+    }
+
+    if (startFresh) {
+      hasRestoredRef.current = true;
+      sessionStorage.removeItem(SESSION_CATEGORY_KEY);
+      sessionStorage.removeItem(SESSION_EXERCISE_KEY);
+      return;
+    }
+
+    if (categories.length === 0 || exercises.length === 0) {
       return;
     }
 
@@ -128,7 +136,7 @@ function Exercises() {
       }
     }
 
-  }, [selectedExerciseId, exercises, categories]);
+  }, [selectedExerciseId, exercises, categories, startFresh]);
 
   useEffect(() => {
     if (selectedCategory) {
