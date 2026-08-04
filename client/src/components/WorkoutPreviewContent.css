@@ -39,6 +39,16 @@
   display: flex;
   align-items: center;
   gap: 12px;
+
+  padding: 12px 0;
+
+  border-bottom: 1px solid var(--divider);
+
+  font-size: .9rem;
+}
+
+.preview-set-row:last-child {
+  border-bottom: none;
 }
 
 .preview-pr-trophy {
@@ -53,14 +63,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
   gap: 12px;
-  padding: 12px 0;
   flex: 1;
-  border-bottom: 1px solid var(--divider);
-  font-size: .9rem;
-}
-
-.preview-set:last-child {
-  border-bottom: none;
 }
 
 .preview-metric {
@@ -84,11 +87,15 @@
     margin-bottom: 18px;
   }
 
+  .preview-set-row {
+    padding: 14px 0;
+  }
+
   .preview-set {
     grid-template-columns: repeat(2, 1fr);
+
     row-gap: 12px;
     column-gap: 20px;
-    padding: 14px 0;
   }
 
 }
