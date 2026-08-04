@@ -58,21 +58,31 @@
   gap: var(--space-sm);
 }
 
-.sets-list {
-  display: flex;
-  flex-direction: column;
-}
-
 .set-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-  gap: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
   padding: 8px 0;
   border-bottom: 1px solid var(--divider);
 }
 
 .set-row:last-child {
   border-bottom: none;
+}
+
+.set-row-values {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 16px;
+  flex: 1;
+}
+
+.set-row-trophy {
+  width: 20px;
+  flex-shrink: 0;
+  font-size: 0.9rem;
+  line-height: 1;
+  text-align: center;
 }
 
 .set-metric {
@@ -86,8 +96,6 @@
   font-size: .9rem;
 }
 
-
-
 @media (max-width: 600px) {
 
   .workout-details {
@@ -98,7 +106,7 @@
     padding: var(--space-md);
   }
 
-  .set-row {
+  .set-row-values {
     grid-template-columns: repeat(2, 1fr);
     row-gap: 8px;
     column-gap: 15px;

@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import { useSettings } from "../hooks/useSettings";
 import { getDisplayMetrics } from "../utils/derivedMetrics";
+import { isSetPersonalRecord, isStarMetric } from "../utils/prBadges";
 import MetricValue from "./MetricValue";
 import "./HistoryWorkoutCard.css";
 
@@ -36,6 +37,10 @@ function HistoryWorkoutCard({ workout }) {
 
           <div className="history-set" key={index}>
 
+            <span className="history-pr-trophy">
+              {isSetPersonalRecord(set) && "🏆"}
+            </span>
+
             <div
               className="history-values"
               style={{
@@ -62,9 +67,9 @@ function HistoryWorkoutCard({ workout }) {
                       inputUnits={set.inputUnits}
                     />
 
-                    {set.personalRecords?.[metric] && (
+                    {isStarMetric(set, metric) && set.personalRecords?.[metric] && (
                       <span className="pr-trophy">
-                        🏆
+                        ⭐
                       </span>
                     )}
 

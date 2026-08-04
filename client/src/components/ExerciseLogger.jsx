@@ -18,6 +18,7 @@ import { getInitialSet } from "../utils/getInitialSet";
 import { isSameDay } from "date-fns";
 import { Backdrop } from "./Backdrop";
 import { useBackButtonClose } from "../hooks/useBackButtonClose";
+import { isSetPersonalRecord, isStarMetric } from "../utils/prBadges";
 import { useSwipeable } from "react-swipeable";
 import { AnimatePresence, motion } from "framer-motion";
 import { slideVariants } from "../utils/motionVariants";
@@ -1102,21 +1103,16 @@ function ExerciseLogger({
                       return (
                         <div
                           key={index}
-                          className={`logged-set ${selectedSetIndex === index
-                            ? "selected"
-                            : ""
-                            }`}
+                          className={`logged-set ${selectedSetIndex === index ? "selected" : ""}`}
                           onClick={() => handleSelectSet(set, index)}
                         >
+                          <span className="set-pr-trophy">
+                            {isSetPersonalRecord(set) && "🏆"}
+                          </span>
 
                           <div className="set-values">
                             {displayMetrics.map(({ key, value }) => (
-
-                              <span
-                                className="set-value"
-                                key={key}
-                              >
-
+                              <span className="set-value" key={key}>
                                 <MetricValue
                                   metric={key}
                                   value={value}
@@ -1125,14 +1121,10 @@ function ExerciseLogger({
                                   className="logger-metric-value"
                                 />
 
-                                {set.personalRecords?.[key] && (
-                                  <span className="prs-trophy">
-                                    🏆
-                                  </span>
+                                {isStarMetric(set, key) && set.personalRecords?.[key] && (
+                                  <span className="prs-star">⭐</span>
                                 )}
-
                               </span>
-
                             ))}
                           </div>
                         </div>

@@ -301,8 +301,9 @@
 }
 
 .logged-set {
-  display: block;
-  gap: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
   padding: 18px;
   background: var(--surface);
   border: 1px solid var(--border);
@@ -344,13 +345,22 @@
   white-space: nowrap;
 }
 
-.prs-trophy {
+.set-pr-trophy {
   width: 22px;
+  text-align: center;
+  flex-shrink: 0;
+  font-size: 18px;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+.prs-star {
+  width: 18px;
   display: inline-flex;
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .exercise-history {

@@ -25,17 +25,29 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .history-values {
   display: grid;
   gap: 14px;
+  flex: 1;
 }
 
 .history-value {
   display: flex;
   align-items: center;
   gap: 6px;
+}
+
+.history-pr-trophy {
+  width: 20px;
+  flex-shrink: 0;
+  font-size: 1rem;
+  line-height: 1;
+  text-align: center;
 }
 
 .pr-trophy {

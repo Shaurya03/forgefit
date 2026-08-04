@@ -1,4 +1,5 @@
 import { getDisplayMetrics } from "../utils/derivedMetrics";
+import { isSetPersonalRecord, isStarMetric } from "../utils/prBadges";
 import MetricValue from "./MetricValue";
 import { useSettings } from "../hooks/useSettings";
 
@@ -49,33 +50,41 @@ function WorkoutPreviewContent({ workout }) {
                 return (
 
                   <div
-                    className="preview-set"
+                    className="preview-set-row"
                     key={set._id || setIndex}
                   >
 
-                    {displayMetrics.map(metric => (
+                    <span className="preview-pr-trophy">
+                      {isSetPersonalRecord(set) && "🏆"}
+                    </span>
 
-                      <span
-                        key={metric.key}
-                        className="preview-metric"
-                      >
+                    <div className="preview-set">
 
-                        <MetricValue
-                          metric={metric.key}
-                          value={metric.value}
-                          settings={settings}
-                          inputUnits={set.inputUnits}
-                        />
+                      {displayMetrics.map(metric => (
 
-                        {set.personalRecords?.[metric.key] && (
-                          <span className="pr-trophies">
-                            🏆
-                          </span>
-                        )}
+                        <span
+                          key={metric.key}
+                          className="preview-metric"
+                        >
 
-                      </span>
+                          <MetricValue
+                            metric={metric.key}
+                            value={metric.value}
+                            settings={settings}
+                            inputUnits={set.inputUnits}
+                          />
 
-                    ))}
+                          {isStarMetric(set, metric.key) && set.personalRecords?.[metric.key] && (
+                            <span className="pr-trophies">
+                              ⭐
+                            </span>
+                          )}
+
+                        </span>
+
+                      ))}
+
+                    </div>
 
                   </div>
 

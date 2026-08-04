@@ -35,15 +35,27 @@
   flex-direction: column;
 }
 
+.preview-set-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.preview-pr-trophy {
+  width: 20px;
+  flex-shrink: 0;
+  font-size: 0.9rem;
+  line-height: 1;
+  text-align: center;
+}
+
 .preview-set {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
   gap: 12px;
-
   padding: 12px 0;
-
+  flex: 1;
   border-bottom: 1px solid var(--divider);
-
   font-size: .9rem;
 }
 
@@ -74,10 +86,8 @@
 
   .preview-set {
     grid-template-columns: repeat(2, 1fr);
-
     row-gap: 12px;
     column-gap: 20px;
-
     padding: 14px 0;
   }
 

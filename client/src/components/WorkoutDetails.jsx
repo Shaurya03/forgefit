@@ -1,5 +1,6 @@
 import { useSettings } from "../hooks/useSettings";
 import { getDisplayMetrics } from "../utils/derivedMetrics";
+import { isSetPersonalRecord, isStarMetric } from "../utils/prBadges";
 import { AnimatePresence, motion } from "framer-motion";
 import MetricValue from "./MetricValue";
 import "./WorkoutDetails.css";
@@ -80,29 +81,35 @@ function WorkoutDetails({
                         key={set._id || setIndex}
                       >
 
-                        {set.displayMetrics.map(metric => (
+                        <span className="set-row-trophy">
+                          {isSetPersonalRecord(set) && "🏆"}
+                        </span>
 
-                          <span
-                            key={metric.key}
-                            className="set-metric"
-                          >
+                        <div className="set-row-values">
+                          {set.displayMetrics.map(metric => (
 
-                            <MetricValue
-                              metric={metric.key}
-                              value={metric.value}
-                              settings={settings}
-                              inputUnits={set.inputUnits}
-                            />
+                            <span
+                              key={metric.key}
+                              className="set-metric"
+                            >
 
-                            {set.personalRecords?.[metric.key] && (
-                              <span className="pr-trophies">
-                                🏆
-                              </span>
-                            )}
+                              <MetricValue
+                                metric={metric.key}
+                                value={metric.value}
+                                settings={settings}
+                                inputUnits={set.inputUnits}
+                              />
 
-                          </span>
+                              {isStarMetric(set, metric.key) && set.personalRecords?.[metric.key] && (
+                                <span className="pr-trophies">
+                                  ⭐
+                                </span>
+                              )}
 
-                        ))}
+                            </span>
+
+                          ))}
+                        </div>
 
                       </div>
 
