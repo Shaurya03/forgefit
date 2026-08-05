@@ -38,7 +38,7 @@ function HistoryWorkoutCard({ workout }) {
           <div className="history-set" key={index}>
 
             <span className="history-pr-trophy">
-              {isSetPersonalRecord(set) && "🏆"}
+              {isSetPersonalRecord(set) && "⭐"}
             </span>
 
             <div
@@ -69,7 +69,7 @@ function HistoryWorkoutCard({ workout }) {
 
                     {isStarMetric(set, metric) && set.personalRecords?.[metric] && (
                       <span className="pr-trophy">
-                        ⭐
+                        🏆
                       </span>
                     )}
 

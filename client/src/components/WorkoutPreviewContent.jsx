@@ -55,7 +55,7 @@ function WorkoutPreviewContent({ workout }) {
                   >
 
                     <span className="preview-pr-trophy">
-                      {isSetPersonalRecord(set) && "🏆"}
+                      {isSetPersonalRecord(set) && "⭐"}
                     </span>
 
                     <div className="preview-set">
@@ -76,7 +76,7 @@ function WorkoutPreviewContent({ workout }) {
 
                           {isStarMetric(set, metric.key) && set.personalRecords?.[metric.key] && (
                             <span className="pr-trophies">
-                              ⭐
+                              🏆
                             </span>
                           )}
 

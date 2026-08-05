@@ -82,7 +82,7 @@ function WorkoutDetails({
                       >
 
                         <span className="set-row-trophy">
-                          {isSetPersonalRecord(set) && "🏆"}
+                          {isSetPersonalRecord(set) && "⭐"}
                         </span>
 
                         <div className="set-row-values">
@@ -102,7 +102,7 @@ function WorkoutDetails({
 
                               {isStarMetric(set, metric.key) && set.personalRecords?.[metric.key] && (
                                 <span className="pr-trophies">
-                                  ⭐
+                                  🏆
                                 </span>
                               )}
 

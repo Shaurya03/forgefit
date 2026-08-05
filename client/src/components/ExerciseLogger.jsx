@@ -1107,7 +1107,7 @@ function ExerciseLogger({
                           onClick={() => handleSelectSet(set, index)}
                         >
                           <span className="set-pr-trophy">
-                            {isSetPersonalRecord(set) && "🏆"}
+                            {isSetPersonalRecord(set) && "⭐"}
                           </span>
 
                           <div className="set-values">
@@ -1122,7 +1122,7 @@ function ExerciseLogger({
                                 />
 
                                 {isStarMetric(set, key) && set.personalRecords?.[key] && (
-                                  <span className="prs-star">⭐</span>
+                                  <span className="prs-star">🏆</span>
                                 )}
                               </span>
                             ))}
