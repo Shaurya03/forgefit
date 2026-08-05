@@ -69,17 +69,19 @@ function Dashboard() {
 
   const { settings } = useSettings();
 
+  const workoutsWithPRs = useMemo(
+    () => getWorkoutHistoryWithPRs(workouts),
+    [workouts]
+  );
+
   const filteredWorkouts = filterWorkouts(
-    workouts,
+    workoutsWithPRs,
     selectedPeriod,
     selectedDate,
     customRange
   );
 
-  const workoutsWithPRs = useMemo(
-    () => getWorkoutHistoryWithPRs(filteredWorkouts),
-    [filteredWorkouts]
-  );
+
 
   const periodLabel = getPeriodLabel(
     selectedPeriod,

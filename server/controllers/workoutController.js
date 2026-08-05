@@ -110,7 +110,7 @@ const getWorkouts = async (req, res, next) => {
           path: "categoryId"
         }
       })
-      .sort({ createdAt: -1 });
+      .sort({ date: -1 });
     res.status(200).json(workouts);
   } catch (error) {
     error.statusCode = error.statusCode || 500;
