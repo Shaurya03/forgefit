@@ -1,4 +1,5 @@
 import { estimateOneRepMax } from "./estimateOneRepMax";
+import { estimatePace } from "./estimatePace";
 
 export function getHistoryWithPRs(history) {
 
@@ -13,7 +14,6 @@ export function getHistoryWithPRs(history) {
     .reverse();
 
   const bestValues = {};
-  const bestDistanceTimes = {};
 
   sortedHistory.forEach(workout => {
 
@@ -24,6 +24,8 @@ export function getHistoryWithPRs(history) {
     let bestDurationOnlySet = null;
     let bestE1RMSet = null;
     let bestE1RM = -Infinity;
+    let bestPaceSet = null;
+    let bestPace = Infinity;
 
     workout.sets.forEach(set => {
       const { weight, reps, laps, distance, duration } = set.metrics;
@@ -46,20 +48,23 @@ export function getHistoryWithPRs(history) {
         bestE1RMSet = set;
       }
 
-      if (distance != null) {
-        if (
-          !bestDistanceSet ||
-          distance > bestDistanceSet.metrics.distance ||
-          (distance === bestDistanceSet.metrics.distance &&
-            duration != null &&
-            (bestDistanceSet.metrics.duration == null || duration < bestDistanceSet.metrics.duration))
-        ) {
-          bestDistanceSet = set;
-        }
-      } else if (duration != null) {
+      // Distance: farthest ever, independent of pace
+      if (distance != null && (!bestDistanceSet || distance > bestDistanceSet.metrics.distance)) {
+        bestDistanceSet = set;
+      }
+
+      // Duration-only exercises (no distance): longest hold, independent metric
+      if (distance == null && duration != null) {
         if (!bestDurationOnlySet || duration > bestDurationOnlySet.metrics.duration) {
           bestDurationOnlySet = set;
         }
+      }
+
+      // Pace: fastest ever, independent of distance
+      const pace = estimatePace(distance, duration);
+      if (pace != null && pace < bestPace) {
+        bestPace = pace;
+        bestPaceSet = set;
       }
     });
 
@@ -83,24 +88,19 @@ export function getHistoryWithPRs(history) {
       bestE1RMSet.personalRecords.e1rm = true;
     }
 
-    if (bestDistanceSet) {
-      const { distance, duration } = bestDistanceSet.metrics;
-      if (distance > (bestValues.distance ?? -Infinity)) {
-        bestValues.distance = distance;
-        bestDistanceTimes[distance] = duration;
-        bestDistanceSet.personalRecords.distance = true;
-      } else if (duration != null && distance === bestValues.distance) {
-        const bestTime = bestDistanceTimes[distance];
-        if (bestTime == null || duration < bestTime) {
-          bestDistanceTimes[distance] = duration;
-          bestDistanceSet.personalRecords.duration = true;
-        }
-      }
+    if (bestDistanceSet && bestDistanceSet.metrics.distance > (bestValues.distance ?? -Infinity)) {
+      bestValues.distance = bestDistanceSet.metrics.distance;
+      bestDistanceSet.personalRecords.distance = true;
     }
 
     if (bestDurationOnlySet && bestDurationOnlySet.metrics.duration > (bestValues.duration ?? -Infinity)) {
       bestValues.duration = bestDurationOnlySet.metrics.duration;
       bestDurationOnlySet.personalRecords.duration = true;
+    }
+
+    if (bestPaceSet && bestPace < (bestValues.pace ?? Infinity)) {
+      bestValues.pace = bestPace;
+      bestPaceSet.personalRecords.pace = true;
     }
   });
 

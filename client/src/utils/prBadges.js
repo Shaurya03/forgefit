@@ -16,11 +16,7 @@ export function isStrengthSet(set) {
 
 export function isSetPersonalRecord(set) {
   const strength = isStrengthSet(set) && Boolean(set.personalRecords?.e1rm);
-
-  const cardio =
-    isCardioSet(set) &&
-    (Boolean(set.personalRecords?.distance) || Boolean(set.personalRecords?.duration));
-
+  const cardio = isCardioSet(set) && Boolean(set.personalRecords?.pace);
   return strength || cardio;
 }
 
@@ -28,7 +24,7 @@ export function isStarMetric(set, key) {
   if (key === "weight") return true;
   if (key === "reps") return true;
   if (key === "laps") return true;
-  if (key === "distance") return !isCardioSet(set);
+  if (key === "distance") return true;
   if (key === "duration") return !isCardioSet(set);
   return false;
 }
