@@ -20,7 +20,7 @@ const FEATURES = [
   {
     title: "PRs that track themselves",
     description:
-      "Every heaviest lift and highest rep set gets flagged the moment you log it. No manual math, no forgetting your own numbers.",
+      "Every heaviest lift, best rep set, and quiet strength gain in between gets flagged the moment you log it. No manual math, no forgetting your own numbers.",
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z" />
