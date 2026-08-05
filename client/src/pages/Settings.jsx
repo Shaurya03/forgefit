@@ -4,6 +4,8 @@ import { MdSocialDistance } from "react-icons/md";
 import { useSettings } from "../hooks/useSettings";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useLogout } from "../hooks/useLogout";
+import { useInstallPrompt } from "../hooks/useInstallPrompt";
+import { FiDownload } from "react-icons/fi";
 import "./Settings.css";
 
 function Settings() {
@@ -16,6 +18,8 @@ function Settings() {
   const { user } = useAuthContext();
 
   const { logout } = useLogout();
+
+  const { isInstallable, isInstalled, isIOS, promptInstall } = useInstallPrompt();
 
   if (!settings) {
     return (
@@ -238,6 +242,38 @@ function Settings() {
           </div>
 
         </section>
+
+        {/* ---------------- Install App ---------------- */}
+
+        {!isInstalled && (isInstallable || isIOS) && (
+          <section className="settings-section">
+
+            <div className="settings-header">
+              <h3>Install App</h3>
+
+              <p>
+                Add ForgeFit to your home screen for quick, full-screen access.
+              </p>
+            </div>
+
+            {isInstallable ? (
+              <div className="install-container">
+                <button
+                  className="install-btn"
+                  onClick={promptInstall}
+                >
+                  <FiDownload />
+                  Install App
+                </button>
+              </div>
+            ) : (
+              <div className="install-ios-instructions">
+                Tap <strong>Share</strong>, then <strong>Add to Home Screen</strong>.
+              </div>
+            )}
+
+          </section>
+        )}
 
         {/* ---------------- About ---------------- */}
 

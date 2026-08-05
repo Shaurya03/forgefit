@@ -210,6 +210,56 @@
   font-weight: 600;
 }
 
+.install-container {
+  display: flex;
+  justify-content: center;
+}
+
+.install-btn {
+  width: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+
+  padding: 14px 20px;
+
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-md);
+
+  background: var(--primary);
+  color: white;
+
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: var(--transition-fast);
+}
+
+.install-btn:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.install-ios-instructions {
+  padding: var(--space-md);
+
+  background: var(--background);
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+
+  color: var(--text-secondary);
+  font-size: .95rem;
+  text-align: center;
+}
+
+.install-ios-instructions strong {
+  color: var(--text-primary);
+}
+
 @media (max-width: 600px) {
 
   .settings-page-header {
