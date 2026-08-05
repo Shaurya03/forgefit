@@ -4,7 +4,6 @@ import { getTopSet } from "./getTopSet";
 export function getInitialSet({
   exercise,
   exerciseHistory,
-  workoutId,
   workoutDate
 }) {
 
@@ -22,7 +21,7 @@ export function getInitialSet({
   // Opening from Exercise page (no workout selected)
   // =========================================================
 
-  if (!workoutId) {
+  if (!workoutDate) {
 
     // Has this exercise already been performed today?
     const todayWorkout =
