@@ -4,6 +4,7 @@ import { PiEye, PiEyeSlash } from "react-icons/pi";
 import { useSignup } from "../hooks/useSignup";
 import { GoogleLogin } from "@react-oauth/google";
 import { useGoogleAuth } from "../hooks/useGoogleAuth";
+import { useLogin } from "../hooks/useLogin";
 import "./Auth.css";
 
 function Signup() {
@@ -22,6 +23,13 @@ function Signup() {
     googleAuth,
     error: googleError
   } = useGoogleAuth();
+
+  const { login, isLoading: isDemoLoading } = useLogin();
+
+  const handleDemoLogin = async () => {
+    const success = await login("demo@forgefit.app", "ForgeFitDemo123!");
+    if (success) navigate("/");
+  };
 
   const navigate = useNavigate();
 
@@ -155,6 +163,15 @@ function Signup() {
             itp_support={false}
           />
         </div>
+
+        <button
+          type="button"
+          className="auth-btn auth-btn-secondary"
+          onClick={handleDemoLogin}
+          disabled={isDemoLoading}
+        >
+          {isDemoLoading ? "Signing in..." : "Try Demo Account"}
+        </button>
 
         <p className="auth-footer">
 

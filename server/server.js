@@ -53,6 +53,9 @@ app.use("/api/categories", categoryRoutes);
 const exerciseRoutes = require("./routes/exercise");
 app.use("/api/exercises", exerciseRoutes);
 
+const demoRoutes = require("./routes/demo");
+app.use("/api/demo", demoRoutes);
+
 const PORT = process.env.PORT || 5000;
 
 // Error handling middleware

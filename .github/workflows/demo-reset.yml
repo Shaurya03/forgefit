@@ -1,0 +1,15 @@
+name: Reset Demo Account
+
+on:
+  schedule:
+    - cron: "0 8 * * *"   # 8am UTC daily
+  workflow_dispatch:
+
+jobs:
+  reset:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reset demo data
+        run: |
+          curl -X POST https://forgefit-uevt.onrender.com/api/demo/reset \
+            -H "x-demo-secret: ${{ secrets.DEMO_RESET_SECRET }}"
